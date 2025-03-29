@@ -1,0 +1,38 @@
+
+
+
+
+CREATE TABLE users (
+    user_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+CREATE TABLE pending_reports (
+    report_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    item_name VARCHAR(255),
+    category ENUM('Electronics & Gadgets', 'Jewelry & Accessories', 'Identification & Documents', 'Wallets & Money','Bags & Carriers','Keys & Access','Clothing items','Other'),
+    item_details TEXT,
+    picture LONGBLOB,
+    location_found VARCHAR(255),
+    date_found DATE,
+    time_found TIME,
+    status ENUM('unclaimed', 'claimed') DEFAULT 'unclaimed',
+    approved BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE approved_reports (
+    report_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    item_name VARCHAR(255),
+     category ENUM('Electronics & Gadgets', 'Jewelry & Accessories', 'Identification & Documents', 'Wallets & Money','Bags & Carriers','Keys & Access','Clothing items','Other'),
+    item_details TEXT,
+    picture LONGBLOB,
+    location_found VARCHAR(255),
+    date_found DATE,
+    time_found TIME,
+    status ENUM('unclaimed', 'claimed') DEFAULT 'unclaimed',
+    approved_at TIMESTAMP
+);

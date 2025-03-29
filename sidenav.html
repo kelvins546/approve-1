@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+          * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Hanken Grotesk', Arial, sans-serif;
+    }
+
+
+    body {
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        display: flex;
+        color: #545454;
+        flex-direction: column;
+        min-height: 100vh;
+
+        background-image: url('images/bg1.png');
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+        /* Navbar styles */
+    .navbar {
+        background-color: #2b4257;
+        padding: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        color: #545454;
+        position: sticky;
+        top: 0;
+      
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .navbar a {
+        color: #fff;
+        padding: 3px;
+        text-decoration: none;
+        margin: 20px;
+        display: inline-block;
+    }
+
+    .navbar a:hover {
+        text-decoration: underline;
+    }
+
+    .navbar-logo {
+        height: 90px;
+        width: auto;
+        /* Maintain aspect ratio */
+        margin-right: 20px;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    /* Dropdown container */
+    .navbar .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Button that activates the dropdown */
+    .navbar .dropbtn {
+        background-color: transparent;
+        color: white;
+        padding: 3px 15px;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        font-size: 16px;
+        margin: 20px;
+        display: inline-block;
+    }
+
+    /* Dropdown content (hidden by default) */
+    .navbar .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        width: 200px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        color: #545454;
+        border-radius: 10px;
+    }
+
+    /* Links inside the dropdown */
+    .navbar .dropdown-content a {
+        color: #545454;
+        padding: 6px 10px;
+        text-decoration: none;
+        display: block;
+
+    }
+
+    .navbar .dropdown-content a:hover {
+        text-decoration: underline;
+    }
+
+    /* Show the dropdown content on hover */
+    .navbar .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Show the dropdown button on hover */
+    .navbar .dropdown:hover .dropbtn {
+        text-decoration: underline;
+    }
+
+/* Hamburger Icon */
+.hamburger-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 22px;
+    width: 30px;
+    margin-left: auto;
+    margin-right: 20px;
+    padding: 0;
+}
+
+.hamburger-icon span {
+    background-color: white;
+    height: 3px;
+    width: 100%;
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+/* Side Navigation */
+.side-nav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.side-nav a {
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.side-nav a:hover {
+    color: #f1f1f1;
+}
+
+.side-nav .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    color: #818181;
+}
+
+/* Show the side-nav */
+.side-nav.open {
+    width: 250px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="images/star.png" alt="Logo" class="navbar-logo">
+    
+        <!-- Claim Reports Dropdown -->
+        <div class="dropdown">
+            <button class="dropbtn">Claim Reports</button>
+            <div class="dropdown-content">
+                <a href="pending_claim.php">Pending Claims</a>
+                <a href="approved_claim_report.php">Approved Claims</a>
+            </div>
+        </div>
+    
+        <!-- Lost Reports Dropdown -->
+        <div class="dropdown">
+            <button class="dropbtn">Lost Reports</button>
+            <div class="dropdown-content">
+                <a href="pending_lost_report.php">Pending Lost</a>
+                <a href="approved_lost_report.php">Approved Lost</a>
+            </div>
+        </div>
+    
+        <!-- Found Reports Dropdown -->
+        <div class="dropdown">
+            <button class="dropbtn">Found Reports</button>
+            <div class="dropdown-content">
+                <a href="pending_found_report.php">Pending Found</a>
+                <a href="approved_found_report.php">Approved Found</a>
+            </div>
+        </div>
+    
+        <!-- Guidelines Link -->
+        <a href="Guidelines.php">Guidelines</a>
+    
+        <!-- Side Navigation Toggle -->
+        <button class="hamburger-icon" onclick="toggleSideNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+    
+    <!-- Side Navigation -->
+    <div id="sideNav" class="side-nav">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSideNav()">&times;</a>
+        <a href="user_profile.php">User Profile</a>
+        <a href="admin_profile.php">Admin Profile</a>
+        <a href="logout.php">Logout</a>
+    </div>
+    
+    <script>
+        function toggleSideNav() {
+    const sideNav = document.getElementById('sideNav');
+    sideNav.classList.toggle('open');
+}
+
+    </script>
+</body>
+</html>

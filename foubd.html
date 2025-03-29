@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Found Item Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Londrina+Outline&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik+80s+Fade&family=Rubik+Burned&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Hanken Grotesk', Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    display: flex;
+    color: #545454;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #fffae4;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.dropdown-btn {
+    padding: 5px 20px;
+    background-color: #fdd400;
+    color: #545454;
+    border: 3px solid #545454;
+    border-radius: 22px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-btn::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid #545454;
+    margin-left: 10px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 180px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 0px;
+    border-radius: 4px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-content a {
+    padding: 0;
+    text-decoration: none;
+    display: block;
+    color: #545454;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.container {
+    max-width: 100%;
+    width: 80%;
+    margin: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 2px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.container-title {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.container-title2 {
+    margin-top: 20px;
+}
+
+.container-title h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    line-height: 1.2;
+}
+
+.container-title p {
+    margin: 0;
+    font-size: 13px;
+    color: #777;
+    margin-left: 10px;
+    line-height: 1.6;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+hr {
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.form-group p {
+    font-size: 13px;
+    color: #777;
+    margin-top: 5px;
+}
+
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
+    margin-right: 4px;
+    appearance: none;
+    border: 1px solid #545454;
+    border-radius: 0;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+    display: inline-block;
+    position: relative;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #fdd400;
+    border-color: #545454;
+}
+
+input[type="checkbox"]:checked::before {
+    content: "✓";
+    position: absolute;
+    top: 0;
+    left: 2px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+input[type="checkbox"]:hover {
+    border-color: #333;
+}
+
+label.terms {
+    font-size: 14px;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    color: #777;
+    flex-wrap: nowrap;
+}
+
+.terms-link {
+    text-decoration: none;
+    color: #333;
+    font-style: italic;
+}
+
+.terms-link:hover {
+    text-decoration: underline;
+}
+
+.align-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.btn {
+    color: #545454;
+    background-color: #fdd400;
+    border: 2px solid #545454;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    width: 100px;
+    height: 40px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    line-height: normal;
+    display: inline-block;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: normal;
+    color: #333;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    font-size: 14px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 4%;
+}
+
+.form-row .form-group {
+    width: 48%;
+}
+
+.form-row-submit {
+    display: flex;
+    justify-content: space-between;
+    gap: 4%;
+    align-items: flex-end;
+}
+
+.form-row-submit .form-group {
+    width: 48%;
+}
+
+.btn {
+    display: block;
+    align-items: center;
+    color: #545454;
+    background-color: #fdd400;
+    border: 2px solid #545454;
+    margin-left: auto;
+    margin-right: 0;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    width: 180px;
+    height: 35px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container-wrapper">
+        <div class="container">
+            <div class="container-title">
+                <h2>Submitting a FOUND item</h2>
+                <p>Please double-check all the information provided</p>
+            </div>
+            <hr>
+            <?php if ($message): ?>
+                <div class="alert <?= strpos($message, 'alert-danger') !== false ? 'alert-danger' : 'alert-success' ?>">
+                    <?= $message; ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST" action="" enctype="multipart/form-data">
+                <!-- Object Title | Date Found -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item_name">Object Title</label>
+                        <input type="text" name="item_name" id="item_name" required aria-required="true"
+                            class="form-control">
+                            <p>eg. lost camera, gold ring, toyota car key</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date_found">Date Found</label>
+                        <input type="date" name="date_found" id="date_found" required aria-required="true"
+                            class="form-control">
+                    </div>
+                </div>
+
+                <!-- Category | Time Found -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select name="category" id="category" required aria-required="true" class="form-control">
+                            <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+                            <option value="Jewelry & Accessories">Jewelry & Accessories</option>
+                            <option value="Identification & Documents">Identification & Documents</option>
+                            <option value="Clothing & Footwear">Clothing & Footwear</option>
+                            <option value="Bag & Carriers">Bag & Carriers</option>
+                            <option value="Wallet & Money">Wallet & Money</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time_found">Time Found</label>
+                        <input type="time" name="time_found" id="time_found" required aria-required="true"
+                            class="form-control">
+                    </div>
+                </div>
+
+                <!-- Brand | Location Found -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="brand">Brand</label>
+                        <input type="text" name="brand" id="brand" class="form-control">
+                       <p> (Ralph Lauren, Samsung, KithenAid, etc.)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location_found">Location Found</label>
+                        <select name="location_found" id="location_found" required aria-required="true"
+                            class="form-control">
+                            <option value="Main Entrance Hall">Main Entrance Hall</option>
+                            <option value="Food Court">Food Court</option>
+                            <option value="Parking Area A">Parking Area A</option>
+                            <option value="Restroom - East Wing">Restroom - East Wing</option>
+                            <option value="Info Center">Info Center</option>
+                            <option value="Gift Shop">Gift Shop</option>
+                            <option value="Amusement Arcade">Amusement Arcade</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Primary Color | Image -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="primary_color">Primary Color</label>
+                        <input type="text" name="primary_color" id="primary_color" class="form-control">
+                        <p>Please add the color that best represents the lost property(Black, Red, Blue, etc.)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="picture">Image</label>
+                        <input type="file" name="picture" id="picture" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row-submit">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" rows="4" class="form-control"></textarea>
+                    </div>
+
+                </div>
+                                    <!-- Contact Information -->
+            <div class="container-title2">
+                <h2>Contact Information</h2>
+                    <hr> 
+                </div>
+                <div class="form-group">
+ 
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" name="first_name" id="first_name" required aria-required="true">
+                            <div class="form-control">
+                                <p>Please enter your first name (This will appear on your submission)</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" required aria-required="true">
+                            <div class="form-control">
+                                <p>Please enter your Last name (This will appear on your submission)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="text" name="phone_number" id="phone_number" required aria-required="true">
+                            <div class="form-control">
+                                <p>Please enter your Phone number (This will appear on your submission)</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Email</label>
+                            <input type="text" name="email" id="email" required aria-required="true">
+                            <div class="form-control">
+                                <p>Please enter your Email (This will appear on your submission)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group align-container">
+                            <label class="terms">
+                                <input type="checkbox" name="terms" required>
+                                I agree to the <a href="guidelines.php" class="terms-link">terms and conditions</a>
+                            </label>
+                            
+                            <input type="submit" class="btn" value="Submit">
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+            </form>
+        </div>
+    </div>
+    
+</body>
+
+</html>

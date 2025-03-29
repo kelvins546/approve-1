@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 100px;
+            flex-wrap: wrap;
+        }
+
+        .container {
+            width: 500px;
+            margin: 10px;
+            background-color: #fff;
+            padding-left: 40px;
+            padding-right: 40px;
+            border-radius: 8px;
+            border: 1px solid #d3d3d3;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hr-container, .hr-container-second {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 0;
+            border-top: 2px solid #ccc;
+            width: 100%;
+        }
+
+        .item-info-container {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin-bottom: 0px;
+            border-radius: 5px;
+        }
+
+        .item-info-container-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+
+        .item-info-tit,
+        .item-info-container-des,
+        .item-info-tit-half,
+        .item-info-container-des-half {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensure Item Name and Description are side by side */
+        .item-info-tit,
+        .item-info-container-des {
+            width: 48%;
+        }
+
+        /* Ensure Category, Location Found, Date Found, and Time Found are stacked */
+        .item-info-tit-half,
+        .item-info-container-des-half {
+            width: 48%;
+            margin-right: 4%;
+        }
+
+        .item-info-title {
+            font-weight: normal;
+            color: #333;
+            margin: 0;
+        }
+
+        .item-info-data {
+            color: #555;
+            font-size: 14px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .item-info strong {
+            color: #545454;
+        }
+
+        .item-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            background-color: #fdd400;
+            color: #545454;
+            font-weight: bold;
+            padding: 5px 23px;
+            border: 1px solid #545454;
+        }
+
+        .btn:hover {
+            background-color: #138496;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="container">
+            <h2 class="item-title">Item Details</h2>
+            <hr class="hr-container">
+
+            <!-- Item Name and Description side by side -->
+            <div class="item-info-container-row">
+                <div class="item-info-tit">
+                    <p class="item-info-title">Item Name</p>
+                    <p class="item-info-data"><?= htmlspecialchars($item["item_name"]) ?></p>
+                </div>
+
+                <div class="item-info-container-des">
+                    <p class="item-info-title">Description</p>
+                    <p class="item-info-data"><?= htmlspecialchars($item["item_details"]) ?></p>
+                </div>
+            </div>
+
+            <!-- Category, Location Found, Date Found, and Time Found below -->
+            <div class="item-info-container-row">
+                <div class="item-info-tit-half">
+                    <p class="item-info-title">Category</p>
+                    <p class="item-info-data"><?= htmlspecialchars($item["category"]) ?></p>
+                </div>
+            </div>
+
+            <div class="item-info-container-row">
+                <div class="item-info-tit-half">
+                    <p class="item-info-title">Location Found</p>
+                    <p class="item-info-data"><?= htmlspecialchars($item["location_found"]) ?></p>
+                </div>
+            </div>
+
+            <div class="item-info-container-row">
+                <div class="item-info-tit-half">
+                    <p class="item-info-title">Date Found</p>
+                    <p class="item-info-data"><?= htmlspecialchars($item["date_found"]) ?></p>
+                </div>
+            </div>
+
+            <div class="item-info-container-row">
+                <div class="item-info-tit-half">
+                    <p class="item-info-title">Time Found</p>
+                    <p class="item-info-data"><?= htmlspecialchars($item["time_found"]) ?></p>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <a href="userview.php" class="btn btn-info">Back</a>
+                <a href="login.php" class="btn btn-info">Claim</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <?php if (!empty($item["picture"])): ?>
+                <h2 class="item-title">Image</h2>
+                <hr class="hr-container-second">
+                <img src="<?= htmlspecialchars($item["picture"]) ?>" alt="Item Picture" class="item-image">
+            <?php endif; ?>
+        </div>
+    </div>
+</body>
+</html>

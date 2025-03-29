@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Found Item Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Londrina+Outline&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik+80s+Fade&family=Rubik+Burned&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hanken Grotesk', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            color: #545454;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #fffae4;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-image: url('images/bg.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #545454;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+        .nav-main {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px;
+            padding-bottom: 20px; /* Add some spacing between nav-main and nav-content */
+        }
+
+
+        .navbar a {
+            color: #545454;
+            padding: 3px;
+            text-decoration: none;
+            margin: 20px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar-logo {
+            height: 90px;
+            width: auto;
+            /* Maintain aspect ratio */
+            margin-right: 20px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .nav-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 70px;
+        }
+
+        .nav-title h1 {
+            font-size: 78px;
+            color: #545454;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+
+        .nav-text p {
+            font-size: 16px;
+            color: #777;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        /* Dropdown button styles */
+       /* Dropdown container */
+       .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            padding: 5px 20px;
+            background-color: #fdd400;
+            color: #545454;
+            border: 3px solid #545454;
+            border-radius: 22px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Create a hollow arrow pointing to the right */
+        .dropdown-btn::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid #545454; /* Arrow color */
+            margin-left: 10px; /* Space between text and arrow */
+        }
+
+        /* Dropdown content (hidden by default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            margin-top: 0px;
+            border-radius: 4px;
+        }
+
+        /* Show the dropdown when hovering over the button */
+        .dropdown:hover .dropdown-content {
+            display: block;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-content a {
+            padding: 0;
+            text-decoration: none;
+            display: block;
+            color: #545454;
+        }
+
+        /* Hover effect for links */
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="nav-main">
+        <img src="images/star.png" alt="Logo" class="navbar-logo">
+        <a href="found_report.php">Home</a>
+        <a href="guidelines.php">Guidelines</a>
+        <a href="userview.php">Browse Reports</a>
+      </div>
+
+        <div class="nav-content">
+            <div class="nav-title">
+                <h1>Lost and found in Star City</h1>
+            </div>
+            <div class="nav-text">
+                <p>We are located at the main entrance right beside the ticket booth</p>
+            </div>
+
+            <!-- Dropdown button for "Report Found" or "Report Lost" -->
+            <div class="dropdown">
+                <button class="dropdown-btn">Report</button>
+                <div class="dropdown-content">
+                    <!-- Ensure these links point to the correct file locations -->
+                    <a href="found_report.php" target="_self">Report Found</a>
+                    <a href="lost_report.php" target="_self">Report Lost</a>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+</body>
+
+</html>

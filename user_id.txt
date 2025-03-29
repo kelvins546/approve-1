@@ -1,0 +1,5 @@
+go to local host 
+
+ALTER TABLE pending_reports AUTO_INCREMENT = 2024001;
+
+= starts of item id

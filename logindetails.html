@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hanken Grotesk', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            color: #545454;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #fffae4;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-image: url('images/bg.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #545454;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            z-index: 1;
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px;
+            padding-bottom: 20px;
+            /* Add some spacing between nav-main and nav-content */
+        }
+
+        .nav-btn {
+            background-color: transparent;
+            color: #545454;
+            border: none;
+            font-size: 16px;
+            margin-top: 12px;
+            margin-left: 30px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+
+        /* Hover effect on button */
+        .nav-btn:hover {
+
+            text-decoration: underline;
+        }
+
+
+        .navbar a {
+            color: #545454;
+            padding: 3px;
+            text-decoration: none;
+            margin: 20px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar-logo {
+            height: 90px;
+            width: auto;
+            /* Maintain aspect ratio */
+            margin-right: 20px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .nav-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 70px;
+        }
+
+        .nav-title h1 {
+            font-size: 78px;
+            color: #545454;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+
+        .nav-text p {
+            font-size: 16px;
+            color: #777;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-main">
+            <img src="images/star.png" alt="Logo" class="navbar-logo">
+            <a href="found_report.php">Home</a>
+            <a href="guidelines.php">Guidelines</a>
+            <ion-icon name="person-outline"></ion-icon>
+            <div class="dropdown">
+                <button class="nav-btn">Browse Reports</button>
+                <div class="dropdown-content">
+                    <a href="userview.php">Found Reports</a>
+                    <a href="lost_reports.php">Lost Reports</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="nav-content">
+            <div class="nav-title">
+                <h1>Lost and found in Star City</h1>
+            </div>
+            <div class="nav-text">
+                <p>We are located at the main entrance right beside the ticket booth</p>
+            </div>
+
+            <!-- Dropdown button for "Report Found" or "Report Lost" -->
+            <div class="dropdown">
+                <button class="dropdown-btn"><?php echo htmlspecialchars($buttonLabel); ?></button>
+                <div class="dropdown-content">
+                    <!-- Ensure these links point to the correct file locations -->
+                    <a href="found_report.php" target="_self">Report Found</a>
+                    <a href="lost_report.php" target="_self">Report Lost</a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</body>
+</html>
