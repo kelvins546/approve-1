@@ -349,7 +349,7 @@ $conn->close();
 
     .icon-btn {
         background-color: #f4f5f6;
-        border: 2px solid #000;
+        border: 2px solid #ff7701;
         border-radius: 50%;
         cursor: pointer;
         padding: 3px;
@@ -380,27 +380,27 @@ $conn->close();
     .nav-main>.icon-btn:hover {
         background-color: #f4f4f9;
         /* Light background on hover */
-        border-color: #000;
+        border-color: #e66a00;
         /* Darker border on hover */
     }
 
 
 
     .nav-main>.icon-btn:hover .user-icon {
-        color: #000;
+        color: #e66a00;
         /* Darker icon color on hover */
     }
 
     .user-icon {
         font-size: 24px;
         /* Icon size */
-        color: #545454;
+        color: #ff7701 !important;
         transition: color 0.3s ease;
         /* Smooth color change on hover */
     }
 
     .user-icon:hover {
-        color: #545454;
+        color: #e66a00;
         /* Darken color on hover */
     }
 
@@ -1404,10 +1404,9 @@ $conn->close();
                 <a href="found_report.php">Home</a>
                 <a href="guidelines.php">Guidelines</a>
                 <div class="dropdown">
-                    <button class="nav-btn">Browse Reports</button>
+                    <a href="userview.php">Browse Reports</a>
                     <div class="dropdown-content1">
-                        <a href="userview.php">Found Reports</a>
-                        <a href="lost_reports.php">Lost Reports</a>
+
                     </div>
                 </div>
             </div>
@@ -1679,7 +1678,7 @@ $conn->close();
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
-               
+
             </div>
             <div class="all-links">
                 <nav class="footer-others">

@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($stmt->execute()) {
             echo "<script>
-                    alert('Report Canceled');
+                    alert('great! the item has been marked as found.');
                     window.location.href = 'usersoloview.php';
                   </script>";
         } else {
@@ -256,9 +256,10 @@ $conn->close();
     <link rel="stylesheet" href="admin_report.css">
 
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
+    @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
 
-        );
+    );
+
     /* General styles */
     * {
         box-sizing: border-box;
@@ -552,6 +553,7 @@ $conn->close();
         color: #545454;
         font-weight: normal;
         padding: 5px 23px;
+        cursor: pointer;
         border: 1px solid #545454;
     }
 
@@ -564,12 +566,13 @@ $conn->close();
         background-color: #28a745;
         color: #fff;
         font-weight: bold;
-        margin-left: 110px;
+
     }
 
     .btn-danger {
         background-color: #dc3545;
         color: #fff;
+        cursor: pointer !important;
         font-weight: bold;
     }
 
@@ -577,15 +580,13 @@ $conn->close();
 
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
-
-    
     </style>
 
 </head>
 
 <body>
     <div class="navbar">
-        
+
     </div>
 
     <div id="loginclickmodal" class="modal-overlay" style="display: none;">
@@ -683,55 +684,17 @@ $conn->close();
             <img src="<?= htmlspecialchars($item["picture"]) ?>" alt="Item Picture" class="item-image">
         </div>
         <div class="container">
-
-            <!-- Contact Information -->
-            <div class="container-title">
-                <h2>Contact Information</h2>
-                <p>(individual who lost the item)</p>
-            </div>
-            <hr>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="first_name">First Name</label>
-                    <input type="text" name="first_name" id="first_name"
-                        value="<?= htmlspecialchars($item['first_name']) ?>" class="form-control" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" name="last_name" id="last_name"
-                        value="<?= htmlspecialchars($item['last_name']) ?>" class="form-control" readonly>
-                </div>
-
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="phone_number">Phone Number</label>
-                    <input type="text" name="phone_number" id="phone_number"
-                        value="<?= htmlspecialchars($item['phone_number']) ?>" class="form-control" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" value="<?= htmlspecialchars($item['email']) ?>"
-                        class="form-control" readonly>
-                </div>
-            </div>
-            <div class="container-title">
-                <h2 class="btn-action">Action</h2>
-                <p>Edit or Cancel the report as needed.</p>
-            </div>
+            <h2 class="btn-action">Action</h2>
             <hr>
             <div class="btn-container">
                 <a href="usersoloview.php" class="btn btn-back">Back</a>
-                <button id="openModalBtn" class="btn btn-success">Edit</button>
                 <form action="" method="POST" style="display:inline;">
                     <input type="hidden" name="delete_id" value="<?= htmlspecialchars($row["id"]) ?>">
-                    <button type="submit" class="btn btn-danger" aria-label="Delete Report">Cancel</button>
+                    <button type="submit" class="btn btn-success" aria-label="Delete Report">Mark as found</button>
                 </form>
 
             </div>
+
         </div>
     </div>
 
@@ -740,199 +703,7 @@ $conn->close();
 
 
     <!-- Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <div class="container2">
-                <span id="closeModalBtn" class="close2">&times;</span>
-                <div class="container-title2">
-                    <h2>Editing a LOST item</h2>
-                    <p>Please double-check all the information provided</p>
-                </div>
-                <hr>
 
-                <form method="POST" action="" enctype="multipart/form-data">
-                    <!-- Object Title | Date Found -->
-                    <div class="form-row2">
-                        <div class="form-group">
-                            <label for="item_name2">Object Title</label>
-                            <input type="text" name="item_name" id="item_name2" required
-                                value="<?= htmlspecialchars($row['item_name'] ?? '') ?>" class="form-control2">
-                            <p>eg. lost camera, gold ring, toyota car key</p>
-                        </div>
-
-
-                        <div class="form-group2">
-                            <label for="date_found2">Date Loss</label>
-                            <input type="date" name="date_found" id="date_found2" required
-                                value="<?= htmlspecialchars($row['date_found'] ?? '') ?>" class="form-control2">
-                        </div>
-                    </div>
-
-                    <!-- Category | Time Found -->
-                    <div class="form-row2">
-                        <div class="form-group2">
-                            <label for="category2">Category</label>
-                            <select name="category" id="category2" required>
-                                <option value="Electronics & Gadgets"
-                                    <?= $row['category'] == 'Electronics & Gadgets' ? 'selected' : '' ?>>Electronics &
-                                    Gadgets</option>
-                                <option value="Jewelry & Accessories"
-                                    <?= $row['category'] == 'Jewelry & Accessories' ? 'selected' : '' ?>>Jewelry &
-                                    Accessories</option>
-                                <option value="Identification & Documents"
-                                    <?= $row['category'] == 'Identification & Documents' ? 'selected' : '' ?>>
-                                    Identification & Documents</option>
-                                <option value="Clothing & Footwear"
-                                    <?= $row['category'] == 'Clothing & Footwear' ? 'selected' : '' ?>>Clothing &
-                                    Footwear</option>
-                                <option value="Bag & Carriers"
-                                    <?= $row['category'] == 'Bag & Carriers' ? 'selected' : '' ?>>Bag & Carriers
-                                </option>
-                                <option value="Wallet & Money"
-                                    <?= $row['category'] == 'Wallet & Money' ? 'selected' : '' ?>>Wallet & Money
-                                </option>
-
-                            </select>
-                        </div>
-
-                        <div class="form-group2">
-                            <label for="time_found2">Time Loss</label>
-                            <input type="time" name="time_found" id="time_found2" required
-                                value="<?= htmlspecialchars($row['time_found'] ?? '') ?>" class="form-control2">
-                        </div>
-                    </div>
-
-                    <!-- Brand | Location Found -->
-                    <div class="form-row2">
-                        <div class="form-group2">
-                            <label for="brand2">Brand</label>
-                            <input type="text" name="brand" id="brand2"
-                                value="<?= htmlspecialchars($row['brand'] ?? '') ?>">
-                            <p> (Ralph Lauren, Samsung, KithenAid, etc.)</p>
-                        </div>
-
-                        <div class="form-group2">
-                            <label for="location_found2">Last known location</label>
-                            <select name="location_found" id="location_found2" required>
-                                <option value="Main Entrance Hall"
-                                    <?= $row['location_found'] == 'Main Entrance Hall' ? 'selected' : '' ?>>Main
-                                    Entrance Hall</option>
-                                <option value="Food Court"
-                                    <?= $row['location_found'] == 'Food Court' ? 'selected' : '' ?>>Food Court</option>
-                                <option value="Parking Area A"
-                                    <?= $row['location_found'] == 'Parking Area A' ? 'selected' : '' ?>>Parking Area A
-                                </option>
-                                <option value="Restroom - East Wing"
-                                    <?= $row['location_found'] == 'Restroom - East Wing' ? 'selected' : '' ?>>Restroom -
-                                    East Wing</option>
-                                <option value="Info Center"
-                                    <?= $row['location_found'] == 'Info Center' ? 'selected' : '' ?>>Info Center
-                                </option>
-                                <option value="Gift Shop"
-                                    <?= $row['location_found'] == 'Gift Shop' ? 'selected' : '' ?>>Gift Shop</option>
-                                <option value="Amusement Arcade"
-                                    <?= $row['location_found'] == 'Amusement Arcade' ? 'selected' : '' ?>>Amusement
-                                    Arcade</option>
-                                <option value="I am not sure"
-                                    <?= $row['location_found'] == 'I am not sure' ? 'selected' : '' ?>>I'm not sure
-                                </option>
-
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Primary Color | Image -->
-                    <div class="form-row2">
-                        <div class="form-group2">
-                            <label for="primary_color2">Primary Color</label>
-                            <input type="text" name="primary_color" id="primary_color2"
-                                value="<?= htmlspecialchars($row['primary_color'] ?? '') ?>">
-
-                            <p>Please add the color that best represents the lost property(Black, Red, Blue, etc.)
-                            </p>
-                        </div>
-
-                        <div class="form-group2">
-                            <label for="picture2">Image</label>
-                            <input type="file" name="picture" id="picture2" class="form-control2">
-                        </div>
-                    </div>
-
-                    <div class="form-row-submit2">
-                        <div class="form-group">
-                            <label for="description2">Description</label>
-                            <textarea name="description" id="description2"
-                                rows="4"><?= htmlspecialchars($row['description'] ?? '') ?></textarea>
-
-                        </div>
-
-                    </div>
-                    <!-- Contact Information -->
-                    <div class="container-title2">
-                        <h2>Contact Information</h2>
-                        <hr>
-                    </div>
-                    <div class="form-group2">
-
-                        <div class="form-row2">
-                            <div class="form-group2">
-                                <label for="first_name2">First Name</label>
-                                <input type="text" name="first_name" id="first_name2" required
-                                    value="<?= htmlspecialchars($row['first_name'] ?? '') ?>">
-
-                                <div class="form-control2">
-                                    <p>Please enter your first name (This will appear on your submission)</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group2">
-                                <label for="last_name2">Last Name</label>
-                                <input type="text" name="last_name" id="last_name2" required
-                                    value="<?= htmlspecialchars($row['last_name'] ?? '') ?>">
-
-                                <div class="form-control2">
-                                    <p>Please enter your Last name (This will appear on your submission)</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row2">
-                            <div class="form-group2">
-                                <label for="phone_number2">Phone Number</label>
-                                <input type="text" name="phone_number" id="phone_number2"
-                                    value="<?= htmlspecialchars($row['phone_number'] ?? '') ?>">
-                                <div class="form-control">
-                                    <p>Please enter your Phone number (This will appear on your submission)</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group2">
-                                <label for="email2">Email Address</label>
-                                <input type="text" name="email" id="email2"
-                                    value="<?= htmlspecialchars($row['email'] ?? '') ?>">
-                                <div class="form-control2">
-                                    <p>Please enter your Email (This will appear on your submission)</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row2">
-                            <div class="form-group align-container">
-                                <label class="terms2">
-                                    <input type="checkbox" name="terms" required>
-                                    I agree to the <a href="guidelines.php" class="terms-link">terms and
-                                        conditions</a>
-                                </label>
-
-                                <input type="submit" class="btn2" value="Update">
-                            </div>
-                        </div>
-
-
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
 
 
 

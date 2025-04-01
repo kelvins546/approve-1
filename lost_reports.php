@@ -218,1268 +218,1268 @@ if (isset($_POST['claim'])) {
 
     <link rel="stylesheet" href="admin_report.css">
     <style>
-    /* General styles */
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: 'Hanken Grotesk', Arial, sans-serif;
-    }
-
-    body {
-
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-        display: flex;
-        color: #545454;
-        flex-direction: column;
-        min-height: 100vh;
-
-        background-image: url('images/f1.png');
-        background-size: cover;
-        background-position: center center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-    }
-
-
-    /* Navbar styles */
-    .navbar {
-        background-color: #fff;
-        padding: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        color: #545454;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        /* Center items vertically */
-        justify-content: space-between;
-        /* Distribute space between items */
-    }
-
-    /* Navigation main container */
-    .nav-main {
-        display: flex;
-        align-items: center;
-        /* Center items vertically */
-        gap: 20px;
-    }
-
-    .nav-content {
-        background-image: url('images/f1.png');
-        background-size: cover;
-        background-position: center center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        padding: 60px 0;
-
-
-    }
-
-    .nav-content-cont {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        margin-left: 70px;
-
-    }
-
-    .nav-main {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-
-        /* Add some spacing between nav-main and nav-content */
-    }
-
-    .nav-btn {
-        background-color: transparent;
-        color: #545454;
-        border: none;
-        font-size: 16px;
-        margin-top: 12px;
-        margin-left: 30px;
-        cursor: pointer;
-        text-align: center;
-        display: inline-block;
-        transition: color 0.3s ease, text-decoration 0.3s ease;
-    }
-
-    /* Hover effect on button */
-    .nav-btn:hover {
-
-        text-decoration: underline;
-    }
-
-    .icon-btn {
-        background-color: #f4f5f6;
-        border: 2px solid #000;
-        border-radius: 50%;
-        cursor: pointer;
-        padding: 3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 20px;
-        /* Adjust this value as needed */
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-        z-index: 99999;
-        position: relative;
-        /* Enable relative positioning */
-        right: -100px;
-    }
-
-
-    .icon-btn {
-        z-index: 99999;
-        margin-left: auto;
-        width: 40px;
-        /* Set to desired size */
-        height: 40px;
-    }
-
-
-
-
-    .nav-main>.icon-btn:hover {
-        background-color: #f4f4f9;
-        /* Light background on hover */
-        border-color: #000;
-        /* Darker border on hover */
-    }
-
-
-
-    .nav-main>.icon-btn:hover .user-icon {
-        color: #000;
-        /* Darker icon color on hover */
-    }
-
-    .user-icon {
-        font-size: 24px;
-        /* Icon size */
-        color: #545454;
-        transition: color 0.3s ease;
-        /* Smooth color change on hover */
-    }
-
-    .user-icon:hover {
-        color: #545454;
-        /* Darken color on hover */
-    }
-
-    .navbar-links {
-        margin-left: 100px;
-        margin-right: 90px;
-    }
-
-    .navbar-links a {
-        color: #545454;
-        padding: 3px;
-        text-decoration: none;
-        margin: 20px;
-        display: inline-block;
-
-    }
-
-    .navbar-links a:hover {
-        text-decoration: underline;
-    }
-
-    .navbar-logo {
-        height: 90px;
-        width: auto;
-        margin-right: 0px;
-        margin-left: 30px;
-        margin-top: 0;
-    }
-
-    .navbar-text {
-        font-family: "Times New Roman", Times, serif;
-        font-size: 36px;
-        font-weight: bold;
-        white-space: nowrap;
-        color: #000 !important;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-
-    }
-
-    .LAFh1 {
-        font-family: "League Spartan", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: bold;
-    }
-
-    .nav-title h1 {
-        font-size: 78px;
-        color: #f6efe0;
-        font-style: italic;
-        font-weight: bold;
-        line-height: 1.1;
-        width: 700px;
-        font-family: 'Hanken Grotesk', Arial, sans-serif;
-
-
-    }
-
-    .nav-text p {
-        font-size: 16px;
-        color: #fff;
-        line-height: 1.4;
-        margin-bottom: 20px;
-
-    }
-
-    /* Dropdown Content */
-    .dropdown-content1 {
-        display: none;
-        position: absolute;
-        background-color: #fff;
-        min-width: 180px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        margin-top: 0;
-        border-radius: 4px;
-        left: 0 !important;
-        right: auto;
-
-    }
-
-
-
-    /* Show Dropdown Content on Hover */
-    .dropdown:hover .dropdown-content1 {
-        display: block;
-    }
-
-    /* Dropdown Links */
-    .dropdown-content1 a {
-        padding: 5px 5px;
-        text-decoration: none;
-        display: block;
-        color: #333;
-        /* Link text color */
-        transition: background-color 0.3s ease;
-    }
-
-    /* Dropdown Links Hover Effect */
-    .dropdown-content1 a:hover {
-        background-color: #ccc;
-        /* Darker hover background color */
-    }
-
-
-
-    .dropdown {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 10px;
-        z-index: 1;
-    }
-
-    .dropdown-btn {
-        padding: 5px 20px;
-        background-color: #e5e5e5;
-        color: #545454;
-        border: 3px solid #545454;
-        border-radius: 22px;
-        cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.3s ease;
-    }
-
-    .dropdown-btn::after {
-        content: '';
-        width: 0;
-        height: 0;
-        border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
-        border-left: 5px solid #545454;
-        margin-left: 10px;
-        transition: background-color 0.3s ease;
-        transform: rotate(270deg);
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: white;
-        min-width: 180px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        margin-top: 0px;
-        border-radius: 4px;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .dropdown-content a {
-        padding: 0;
-        text-decoration: none;
-        display: block;
-        color: #545454;
-    }
-
-    .dropdown-content a:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Rotate the arrow when hovering over the dropdown button */
-    .dropdown:hover .dropdown-btn::after {
-        transform: rotate(90deg);
-        /* Rotates the arrow */
-    }
-
-    /* Hover effect on the button (optional, for visual feedback) */
-    .dropdown-btn:hover {
-        background-color: #ccc
-    }
-
-    .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 999;
-    }
-
-    .modal-content1 {
-        background: white;
-        padding: 30px;
-        color: #545454;
-        border-radius: 10px;
-        border: 1px solid #888;
-        width: 400px;
-        max-width: 100%;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 0.3s ease-out;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .modal-title1 {
-        text-align: center;
-    }
-
-    .modal-title1 h3 {
-        font-size: 22px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-    .modal-title1 p {
-        margin-bottom: 15px;
-        font-size: 14px;
-        color: #666;
-    }
-
-    .confirmation-section {
-        margin-bottom: 20px;
-        padding: 15px;
-        background: #f9f9f9;
-        border-left: 4px solid #f39c12;
-        border-radius: 5px;
-    }
-
-    .confirmation-section h3 {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .confirmation-section p {
-        font-size: 14px;
-        line-height: 1.5;
-        color: #333;
-        margin-top: 5px;
-    }
-
-    .confirmation-form {
-        text-align: left;
-    }
-
-    .form-group {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .checkbox-label {
-        cursor: pointer;
-        font-size: 14px;
-        color: #333;
-    }
-
-    .button-container {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-    }
-
-    .btn-cancel {
-        padding: 10px 20px;
-        background-color: red;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .btn-cancel:hover {
-        background-color: darkred;
-    }
-
-    .btn-success {
-        padding: 10px 20px;
-        background-color: green;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .btn-success:hover {
-        background-color: darkgreen;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
+        /* General styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hanken Grotesk', Arial, sans-serif;
         }
 
-        to {
-            opacity: 1;
-        }
-    }
+        body {
 
-    .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 999;
-    }
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            color: #545454;
+            flex-direction: column;
+            min-height: 100vh;
 
-    .modal-content {
-        background-color: #fefefe;
-        padding: 30px;
-        color: #545454;
-        border-radius: 10px;
-        border: 1px solid #888;
-        width: 400px;
-        max-width: 100%;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 0.3s ease-out;
-        margin-bottom: 0px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .modal-content-greet {
-        background-color: #fefefe;
-        padding: 30px;
-        color: #545454;
-        border-radius: 10px;
-        border: 1px solid #888;
-        width: 340px;
-        max-width: 100%;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 0.3s ease-out;
-        margin-bottom: 0px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .modal-overlay.show {
-        display: block;
-        animation: fadeIn 2.5s ease-out;
-    }
-
-    .modal-overlay.hide {
-        animation: fadeOut 2.5s ease-in;
-        animation-fill-mode: forwards;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
+            background-image: url('images/f1.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
-        to {
-            opacity: 1;
-        }
-    }
 
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-        }
-
-        to {
-            opacity: 0;
-        }
-    }
-
-    .modal-title {
-        display: inline;
-        text-align: center;
-    }
-
-    ul {
-        margin-left: 30px;
-        margin-top: 5px;
-        font-size: 14px;
-    }
-
-    .modal-title h3 {
-        margin-bottom: 10px;
-        font-size: 22px;
-    }
-
-    .modal-title p {
-        margin-bottom: 15px;
-    }
-
-    .modal-cont {
-        font-size: 14px;
-    }
-
-    .modal-ques {
-        margin-bottom: 5px;
-        margin-top: 25px;
-    }
-
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
+        /* Navbar styles */
+        .navbar {
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #545454;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            /* Center items vertically */
+            justify-content: space-between;
+            /* Distribute space between items */
         }
 
-        100% {
-            opacity: 1;
+        /* Navigation main container */
+        .nav-main {
+            display: flex;
+            align-items: center;
+            /* Center items vertically */
+            gap: 20px;
         }
-    }
-
-    .italic {
-        font-style: italic;
-        color: #545454;
-    }
-
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .btn-ok {
-        padding: 5px 40px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .btn-ok:hover {
-        background-color: #45a049;
-    }
-
-    .btn-ok12 {
-        padding: 5px 40px;
-        background-color: #545454;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-left: 5px;
-    }
-
-    .btn-ok12:hover {
-        background-color: #ccc;
-    }
-
-    /* Modal Content Styling */
-    .modal-content12 {
-        background-color: #fff;
-        margin: 10% auto;
-        /* Center vertically and horizontally */
-
-        border: 1px solid #888;
-        width: 40%;
-        /* Adjust width as needed */
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        /* Center the text */
-    }
-
-    /* Header Styling */
-    .modal-content12 h2 {
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-    /* Form Group Styling */
-    .form-group-tip {
-        margin-bottom: 20px;
-        text-align: left;
-        /* Align label and textarea to the left */
-    }
-
-    .form-group-tip label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #555;
-    }
-
-    .form-group-tip textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        resize: none;
-        font-size: 16px;
-        box-sizing: border-box;
-        /* Ensure padding doesn't affect width */
-    }
-
-
-
-    .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 999;
-    }
-
-    .modal-content2 {
-        background-color: #fefefe;
-        padding: 30px;
-        color: #545454;
-        border-radius: 10px;
-        border: 1px solid #fefefe;
-        width: 200px;
-        max-width: 100%;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 0.3s ease-out;
-        margin-bottom: 0px;
-        position: absolute;
-        top: 23%;
-        right: 0;
-        transform: translate(-50%, -50%);
-        padding-top: 20px;
-
-    }
-
-    /* Adding the arrow */
-    .modal-content2::after {
-        content: "";
-        position: absolute;
-        top: 5px;
-        /* Position the arrow vertically */
-        right: -10px;
-        /* Place the arrow to the right side of the modal */
-        width: 0;
-        height: 0;
-        border-top: 10px solid transparent;
-        /* Transparent top edge */
-        border-bottom: 10px solid transparent;
-        /* Transparent bottom edge */
-        border-left: 10px solid #fff;
-        /* The arrow color matches the modal background */
-        z-index: 1000;
-        /* Ensures it appears above other elements */
-    }
-
-    /* Style for the close button */
-    .close-btn {
-        position: absolute;
-        top: 0px;
-        /* Adjust based on your design */
-        right: 10px;
-        /* Adjust based on your design */
-        background: transparent;
-        border: none;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #333;
-        /* Change color to match your theme */
-    }
-
-    .dropdown {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 10px;
-        z-index: 1;
-    }
-
-    .dropdown-btn {
-        padding: 5px 20px;
-        background-color: #e5e5e5;
-        color: #545454;
-        border: 3px solid #545454;
-        border-radius: 22px;
-        cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.3s ease;
-    }
-
-    .dropdown-btn::after {
-        content: '';
-        width: 0;
-        height: 0;
-        border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
-        border-left: 5px solid #545454;
-        margin-left: 10px;
-        transition: background-color 0.3s ease;
-        transform: rotate(270deg);
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: white;
-        min-width: 180px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        margin-top: 0px;
-        border-radius: 4px;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .dropdown-content a {
-        padding: 0;
-        text-decoration: none;
-        display: block;
-        color: #545454;
-    }
-
-    .dropdown-content a:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Rotate the arrow when hovering over the dropdown button */
-    .dropdown:hover .dropdown-btn::after {
-        transform: rotate(90deg);
-        /* Rotates the arrow */
-    }
-
-    /* Hover effect on the button (optional, for visual feedback) */
-    .dropdown-btn:hover {
-        background-color: #ccc
-    }
-
-    .modal-title2 {
-        display: inline;
-        text-align: center;
-    }
-
-    .modal-title2 h3 {
-        margin-bottom: 2px;
-        font-size: 17px;
-    }
-
-    .modal-title2 p {
-        margin-bottom: 2px;
-        font-size: 14px;
-    }
-
-    .butclass {
-        display: flex;
-        /* Enables flexbox */
-        flex-direction: column;
-        /* Align items vertically */
-        align-items: center;
-        /* Center items horizontally */
-        gap: 10px;
-        /* Adds spacing between the buttons */
-        margin-top: 20px;
-        /* Optional: add some spacing above the buttons */
-    }
-
-    .btn-ok2 {
-        padding: 5px 20px;
-        color: #545454;
-        border: none;
-        border-radius: 0px;
-        cursor: pointer;
-        margin-bottom: 10px;
-        text-align: center;
-        border: 2px solid #545454;
-
-        /* Allow the button to resize based on content */
-        width: 120px;
-        /* Optional: Ensure buttons have consistent size */
-    }
-
-    .btn-ok2:hover {
-        background-color: #ccc;
-    }
-
-
-    .close-btn:hover {
-        color: #f00;
-        /* Optional: Add hover effect */
-    }
-
-
-
-    /* Table container styles */
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    /* Table styles */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 0;
-    }
-
-    /* Table Heading and Cell styles */
-    th,
-    td {
-        padding: 10px;
-        text-align: center;
-        border: 2px solid #545454;
-    }
-
-    /* Table heading styles */
-    th {
-
-        color: #fff;
-        padding-bottom: 15px !important;
-        margin: 0;
-        background-color: #737373;
-    }
-
-
-
-
-    tr:nth-child(even) {
-        background-color: #fff9e1;
-    }
-
-    /* Container styles */
-    .container {
-        max-width: 1240px;
-        width: 100%;
-        margin: 0px auto;
-        background-color: #fff;
-        padding: 0;
-        border-radius: 0px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .button-container button {
-        margin: 5px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    /* Heading */
-
-    .hr-center {
-        border: none;
-        /* Removes the default border */
-        border-top: 1px solid #545454;
-        width: 20%;
-        margin: 0 auto;
-        padding-bottom: 20px;
-
-    }
-
-
-    .search-container {
-        text-align: center;
-        margin: 20px 0;
-    }
-
-    .search-container h2 {
-        color: #fff;
-        padding-top: 15px;
-        margin-bottom: 9px;
-        margin-top: 10px !important;
-        font-size: 45px;
-        font-family: "League Spartan", sans-serif;
-    }
-
-    .search-form {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .search-input {
-        padding: 10px;
-        width: 500px;
-        border: 2px solid #545454;
-        border-radius: 0px;
-        font-size: 14px;
-        margin-right: 0px;
-        background-color: transparent;
-        color: #545454;
-    }
-
-    .search-input:focus {
-        border-radius: 0px;
-        outline: none;
-    }
-
-    .search-btn {
-        padding: 10px 20px;
-        background-color: #545454;
-        color: white;
-        border: 2px solid #545454;
-        border-radius: 0px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .search-btn:hover {
-        background-color: #444444;
-    }
-
-    .search-btn ion-icon {
-        font-size: 14px;
-        color: #fdd400;
-
-    }
-
-    .text-center {
-        text-align: center;
-    }
-
-    /*limit */
-    .transparent-form {
-        background: transparent;
-        border: none;
-        padding: 0;
-        margin-left: 140px;
-        margin-bottom: 10px;
-    }
-
-    .transparent-select {
-        background: transparent;
-        border: 1px solid #545454;
-        color: #333;
-        padding: 5px 10px;
-        font-size: 14px;
-    }
-
-    .transparent-form label {
-        color: #545454;
-        font-size: 14px;
-    }
-
-
-    /* Button styles */
-    .btn .view-button {
-        padding: 4px 8px;
-        color: #545454 !important;
-        text-decoration: none;
-
-        display: inline-block;
-        margin: 0 2px;
-        text-align: center;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        transition: background-color 0.3s, box-shadow 0.3s;
-    }
-
-
-    .btn:hover {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn-success {
-        background-color: #545454;
-        color: #fff;
-        font-weight: bold;
-        padding: 5px 23px;
-        border: 1px solid #545454;
-    }
-
-    .btn:hover {
-        opacity: 0.9;
-    }
-
-    /* Hover effect */
-    .view-button:hover {
-        opacity: 0.9;
-    }
-
-    table tr:nth-child(even) .view-button {
-        color: #545454;
-        font-style: italic;
-    }
-
-    /* Odd rows button color */
-    table tr:nth-child(odd) .view-button {
-        color: #545454;
-        font-style: italic;
-    }
-
-    .form-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-    }
-
-    /* Pagination: align horizontally */
-    .pagination-info {
-        font-size: 14px;
-        color: #545454;
-        margin: 10px 0;
-        font-family: 'Arial', sans-serif;
-        display: inline-block;
-        margin-left: 140px;
-        margin-bottom: 60px;
-        margin-right: 0px;
-    }
-
-    /* Style for the pagination */
-    .pagination {
-        display: inline-flex;
-        list-style-type: none;
-        padding: 0;
-        margin: 10px 0;
-        justify-content: flex-start;
-    }
-
-    .pagination a {
-        display: inline-block;
-        padding: 8px 12px;
-        margin: 0;
-        color: #545454;
-        text-decoration: none;
-        background-color: transparent;
-        border: 1px solid #545454;
-        border-radius: 0px;
-        font-size: 14px;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* Active page number styling */
-    .pagination a.active {
-        background-color: #fdd400;
-        color: #545454;
-        border-color: #545454;
-    }
-
-    /* Hover effect for pagination links */
-    .pagination a:hover {
-        background-color: #ddd;
-        color: #007bff;
-    }
-
-    /* Footer */
-    .footer {
-        background-color: #fff;
-        padding: 20px 0;
-        color: #545454;
-        font-family: 'Hanken Grotesk', sans-serif;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        position: relative;
-        text-align: center;
-    }
-
-    .footer-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        /* Space out logo and contact text */
-        width: 90%;
-        margin: 0 auto;
-        padding-bottom: 20px;
-    }
-
-    .footer-logo {
-        align-self: flex-start;
-        margin-top: 25px;
-    }
-
-    .footer-logo img {
-        max-width: 70px;
-    }
-
-
-    .footer-contact {
-        text-align: right;
-        /* Align text to the right */
-        font-size: 14px;
-        margin-left: auto;
-        width: 20%;
-        margin-bottom: 25px;
-    }
-
-    .footer-contact h4 {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-
-    .footer-contact p {
-        font-size: 14px;
-        margin-top: 0;
-
-    }
-
-    .all-links {
-        display: flex;
-
-        width: 100%;
-        margin-top: 20px;
-        position: absolute;
-
-        justify-content: center;
-    }
-
-    .footer-others {
-        display: flex;
-        justify-content: center;
-        /* Align links in the center */
-        gap: 30px;
-        top: 190px;
-        left: 30%;
-        margin-left: 140px;
-        margin-top: 20px;
-        transform: translateX(-50%);
-    }
-
-
-    .footer-others a {
-        color: #545454;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    .footer-separator {
-        width: 90%;
-        height: 1px;
-        background-color: #545454;
-        margin: 10px auto;
-        border: none;
-        position: absolute;
-        bottom: 40px;
-        left: 50%;
-        margin-top: 20px;
-        transform: translateX(-50%);
-    }
-
-    .footer-text {
-        font-size: 14px;
-        margin-top: 20px;
-        color: #545454;
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-
-    }
-
-    @media (max-width: 768px) {
-
-        th,
-        td {
-            padding: 8px;
+
+        .nav-content {
+            background-image: url('images/f1.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            padding: 60px 0;
+
+
+        }
+
+        .nav-content-cont {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 70px;
+
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            /* Add some spacing between nav-main and nav-content */
+        }
+
+        .nav-btn {
+            background-color: transparent;
+            color: #545454;
+            border: none;
+            font-size: 16px;
+            margin-top: 12px;
+            margin-left: 30px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+
+        /* Hover effect on button */
+        .nav-btn:hover {
+
+            text-decoration: underline;
+        }
+
+        .icon-btn {
+            background-color: #f4f5f6;
+            border: 2px solid #ff7701;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 20px;
+            /* Adjust this value as needed */
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            z-index: 99999;
+            position: relative;
+            /* Enable relative positioning */
+            right: -100px;
+        }
+
+
+        .icon-btn {
+            z-index: 99999;
+            margin-left: auto;
+            width: 40px;
+            /* Set to desired size */
+            height: 40px;
+        }
+
+
+
+
+        .nav-main>.icon-btn:hover {
+            background-color: #f4f4f9;
+            /* Light background on hover */
+            border-color: #e66a00;
+            /* Darker border on hover */
+        }
+
+
+
+        .nav-main>.icon-btn:hover .user-icon {
+            color: #e66a00;
+            /* Darker icon color on hover */
+        }
+
+        .user-icon {
+            font-size: 24px;
+            /* Icon size */
+            color: #ff7701 !important;
+            transition: color 0.3s ease;
+            /* Smooth color change on hover */
+        }
+
+        .user-icon:hover {
+            color: #e66a00;
+            /* Darken color on hover */
+        }
+
+        .navbar-links {
+            margin-left: 100px;
+            margin-right: 90px;
+        }
+
+        .navbar-links a {
+            color: #545454;
+            padding: 3px;
+            text-decoration: none;
+            margin: 20px;
+            display: inline-block;
+
+        }
+
+        .navbar-links a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar-logo {
+            height: 90px;
+            width: auto;
+            margin-right: 0px;
+            margin-left: 30px;
+            margin-top: 0;
+        }
+
+        .navbar-text {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 36px;
+            font-weight: bold;
+            white-space: nowrap;
+            color: #000 !important;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+        }
+
+        .LAFh1 {
+            font-family: "League Spartan", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: bold;
+        }
+
+        .nav-title h1 {
+            font-size: 78px;
+            color: #f6efe0;
+            font-style: italic;
+            font-weight: bold;
+            line-height: 1.1;
+            width: 700px;
+            font-family: 'Hanken Grotesk', Arial, sans-serif;
+
+
+        }
+
+        .nav-text p {
+            font-size: 16px;
+            color: #fff;
+            line-height: 1.4;
+            margin-bottom: 20px;
+
+        }
+
+        /* Dropdown Content */
+        .dropdown-content1 {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            margin-top: 0;
+            border-radius: 4px;
+            left: 0 !important;
+            right: auto;
+
+        }
+
+
+
+        /* Show Dropdown Content on Hover */
+        .dropdown:hover .dropdown-content1 {
+            display: block;
+        }
+
+        /* Dropdown Links */
+        .dropdown-content1 a {
+            padding: 5px 5px;
+            text-decoration: none;
+            display: block;
+            color: #333;
+            /* Link text color */
+            transition: background-color 0.3s ease;
+        }
+
+        /* Dropdown Links Hover Effect */
+        .dropdown-content1 a:hover {
+            background-color: #ccc;
+            /* Darker hover background color */
+        }
+
+
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+
+        .dropdown-btn {
+            padding: 5px 20px;
+            background-color: #e5e5e5;
+            color: #545454;
+            border: 3px solid #545454;
+            border-radius: 22px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-btn::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid #545454;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+            transform: rotate(270deg);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            margin-top: 0px;
+            border-radius: 4px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-content a {
+            padding: 0;
+            text-decoration: none;
+            display: block;
+            color: #545454;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Rotate the arrow when hovering over the dropdown button */
+        .dropdown:hover .dropdown-btn::after {
+            transform: rotate(90deg);
+            /* Rotates the arrow */
+        }
+
+        /* Hover effect on the button (optional, for visual feedback) */
+        .dropdown-btn:hover {
+            background-color: #ccc
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .modal-content1 {
+            background: white;
+            padding: 30px;
+            color: #545454;
+            border-radius: 10px;
+            border: 1px solid #888;
+            width: 400px;
+            max-width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease-out;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .modal-title1 {
+            text-align: center;
+        }
+
+        .modal-title1 h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .modal-title1 p {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .confirmation-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #f39c12;
+            border-radius: 5px;
+        }
+
+        .confirmation-section h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .confirmation-section p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .confirmation-form {
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-label {
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-cancel:hover {
+            background-color: darkred;
+        }
+
+        .btn-success {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-success:hover {
+            background-color: darkgreen;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 30px;
+            color: #545454;
+            border-radius: 10px;
+            border: 1px solid #888;
+            width: 400px;
+            max-width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease-out;
+            margin-bottom: 0px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .modal-content-greet {
+            background-color: #fefefe;
+            padding: 30px;
+            color: #545454;
+            border-radius: 10px;
+            border: 1px solid #888;
+            width: 340px;
+            max-width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease-out;
+            margin-bottom: 0px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .modal-overlay.show {
+            display: block;
+            animation: fadeIn 2.5s ease-out;
+        }
+
+        .modal-overlay.hide {
+            animation: fadeOut 2.5s ease-in;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .modal-title {
+            display: inline;
+            text-align: center;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 5px;
             font-size: 14px;
         }
 
-        th:nth-child(1),
-        td:nth-child(1),
-        th:nth-child(3),
-        td:nth-child(3),
-        th:nth-child(5),
-        td:nth-child(5) .form-container {
+        .modal-title h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .modal-title p {
+            margin-bottom: 15px;
+        }
+
+        .modal-cont {
+            font-size: 14px;
+        }
+
+        .modal-ques {
+            margin-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .italic {
+            font-style: italic;
+            color: #545454;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-ok {
+            padding: 5px 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-ok:hover {
+            background-color: #45a049;
+        }
+
+        .btn-ok12 {
+            padding: 5px 40px;
+            background-color: #545454;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .btn-ok12:hover {
+            background-color: #ccc;
+        }
+
+        /* Modal Content Styling */
+        .modal-content12 {
+            background-color: #fff;
+            margin: 10% auto;
+            /* Center vertically and horizontally */
+
+            border: 1px solid #888;
+            width: 40%;
+            /* Adjust width as needed */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            /* Center the text */
+        }
+
+        /* Header Styling */
+        .modal-content12 h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Form Group Styling */
+        .form-group-tip {
+            margin-bottom: 20px;
+            text-align: left;
+            /* Align label and textarea to the left */
+        }
+
+        .form-group-tip label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group-tip textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            font-size: 16px;
+            box-sizing: border-box;
+            /* Ensure padding doesn't affect width */
+        }
+
+
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .modal-content2 {
+            background-color: #fefefe;
+            padding: 30px;
+            color: #545454;
+            border-radius: 10px;
+            border: 1px solid #fefefe;
+            width: 200px;
+            max-width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease-out;
+            margin-bottom: 0px;
+            position: absolute;
+            top: 23%;
+            right: 0;
+            transform: translate(-50%, -50%);
+            padding-top: 20px;
+
+        }
+
+        /* Adding the arrow */
+        .modal-content2::after {
+            content: "";
+            position: absolute;
+            top: 5px;
+            /* Position the arrow vertically */
+            right: -10px;
+            /* Place the arrow to the right side of the modal */
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            /* Transparent top edge */
+            border-bottom: 10px solid transparent;
+            /* Transparent bottom edge */
+            border-left: 10px solid #fff;
+            /* The arrow color matches the modal background */
+            z-index: 1000;
+            /* Ensures it appears above other elements */
+        }
+
+        /* Style for the close button */
+        .close-btn {
+            position: absolute;
+            top: 0px;
+            /* Adjust based on your design */
+            right: 10px;
+            /* Adjust based on your design */
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+            /* Change color to match your theme */
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+
+        .dropdown-btn {
+            padding: 5px 20px;
+            background-color: #e5e5e5;
+            color: #545454;
+            border: 3px solid #545454;
+            border-radius: 22px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-btn::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid #545454;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+            transform: rotate(270deg);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            margin-top: 0px;
+            border-radius: 4px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-content a {
+            padding: 0;
+            text-decoration: none;
+            display: block;
+            color: #545454;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Rotate the arrow when hovering over the dropdown button */
+        .dropdown:hover .dropdown-btn::after {
+            transform: rotate(90deg);
+            /* Rotates the arrow */
+        }
+
+        /* Hover effect on the button (optional, for visual feedback) */
+        .dropdown-btn:hover {
+            background-color: #ccc
+        }
+
+        .modal-title2 {
+            display: inline;
+            text-align: center;
+        }
+
+        .modal-title2 h3 {
+            margin-bottom: 2px;
+            font-size: 17px;
+        }
+
+        .modal-title2 p {
+            margin-bottom: 2px;
+            font-size: 14px;
+        }
+
+        .butclass {
+            display: flex;
+            /* Enables flexbox */
             flex-direction: column;
-            align-items: flex-start;
+            /* Align items vertically */
+            align-items: center;
+            /* Center items horizontally */
+            gap: 10px;
+            /* Adds spacing between the buttons */
+            margin-top: 20px;
+            /* Optional: add some spacing above the buttons */
+        }
+
+        .btn-ok2 {
+            padding: 5px 20px;
+            color: #545454;
+            border: none;
+            border-radius: 0px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-align: center;
+            border: 2px solid #545454;
+
+            /* Allow the button to resize based on content */
+            width: 120px;
+            /* Optional: Ensure buttons have consistent size */
+        }
+
+        .btn-ok2:hover {
+            background-color: #ccc;
+        }
+
+
+        .close-btn:hover {
+            color: #f00;
+            /* Optional: Add hover effect */
+        }
+
+
+
+        /* Table container styles */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        /* Table Heading and Cell styles */
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #545454;
+        }
+
+        /* Table heading styles */
+        th {
+
+            color: #fff;
+            padding-bottom: 15px !important;
+            margin: 0;
+            background-color: #737373;
+        }
+
+
+
+
+        tr:nth-child(even) {
+            background-color: #fff9e1;
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 1240px;
+            width: 100%;
+            margin: 0px auto;
+            background-color: #fff;
+            padding: 0;
+            border-radius: 0px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-container button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Heading */
+
+        .hr-center {
+            border: none;
+            /* Removes the default border */
+            border-top: 1px solid #545454;
+            width: 20%;
+            margin: 0 auto;
+            padding-bottom: 20px;
+
+        }
+
+
+        .search-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search-container h2 {
+            color: #fff;
+            padding-top: 15px;
+            margin-bottom: 9px;
+            margin-top: 10px !important;
+            font-size: 45px;
+            font-family: "League Spartan", sans-serif;
         }
 
         .search-form {
-            margin-right: 14px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 10px;
+            width: 500px;
+            border: 2px solid #545454;
+            border-radius: 0px;
+            font-size: 14px;
+            margin-right: 0px;
+            background-color: transparent;
+            color: #545454;
+        }
+
+        .search-input:focus {
+            border-radius: 0px;
+            outline: none;
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            background-color: #545454;
+            color: white;
+            border: 2px solid #545454;
+            border-radius: 0px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .search-btn:hover {
+            background-color: #444444;
+        }
+
+        .search-btn ion-icon {
+            font-size: 14px;
+            color: #fdd400;
+
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /*limit */
+        .transparent-form {
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin-left: 140px;
             margin-bottom: 10px;
-            width: 50%;
         }
 
-        .approve-delete-form {
-            justify-content: flex-start;
-            width: 50%;
+        .transparent-select {
+            background: transparent;
+            border: 1px solid #545454;
+            color: #333;
+            padding: 5px 10px;
+            font-size: 14px;
         }
-    }
 
-    @media (max-width: 480px) {
+        .transparent-form label {
+            color: #545454;
+            font-size: 14px;
+        }
 
-        th,
-        td {
-            padding: 5px;
-            font-size: 12px;
+
+        /* Button styles */
+        .btn .view-button {
+            padding: 4px 8px;
+            color: #545454 !important;
+            text-decoration: none;
+
+            display: inline-block;
+            margin: 0 2px;
+            text-align: center;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+
+        .btn:hover {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-success {
+            background-color: #545454;
+            color: #fff;
+            font-weight: bold;
+            padding: 5px 23px;
+            border: 1px solid #545454;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Hover effect */
+        .view-button:hover {
+            opacity: 0.9;
+        }
+
+        table tr:nth-child(even) .view-button {
+            color: #545454;
+            font-style: italic;
+        }
+
+        /* Odd rows button color */
+        table tr:nth-child(odd) .view-button {
+            color: #545454;
+            font-style: italic;
         }
 
         .form-container {
-            align-items: flex-start;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
-        .search-form input[type="text"] {
-            margin-right: 5px;
+        /* Pagination: align horizontally */
+        .pagination-info {
+            font-size: 14px;
+            color: #545454;
+            margin: 10px 0;
+            font-family: 'Arial', sans-serif;
+            display: inline-block;
+            margin-left: 140px;
+            margin-bottom: 60px;
+            margin-right: 0px;
         }
 
-        .search-form select {
-            margin-right: 5px;
+        /* Style for the pagination */
+        .pagination {
+            display: inline-flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+            justify-content: flex-start;
         }
 
-        .approve-delete-form button {
-            margin-right: 3px;
+        .pagination a {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 0;
+            color: #545454;
+            text-decoration: none;
+            background-color: transparent;
+            border: 1px solid #545454;
+            border-radius: 0px;
+            font-size: 14px;
+            transition: background-color 0.3s, color 0.3s;
         }
-    }
+
+        /* Active page number styling */
+        .pagination a.active {
+            background-color: #fdd400;
+            color: #545454;
+            border-color: #545454;
+        }
+
+        /* Hover effect for pagination links */
+        .pagination a:hover {
+            background-color: #ddd;
+            color: #007bff;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #fff;
+            padding: 20px 0;
+            color: #545454;
+            font-family: 'Hanken Grotesk', sans-serif;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* Space out logo and contact text */
+            width: 90%;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+        .footer-logo {
+            align-self: flex-start;
+            margin-top: 25px;
+        }
+
+        .footer-logo img {
+            max-width: 70px;
+        }
+
+
+        .footer-contact {
+            text-align: right;
+            /* Align text to the right */
+            font-size: 14px;
+            margin-left: auto;
+            width: 20%;
+            margin-bottom: 25px;
+        }
+
+        .footer-contact h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .footer-contact p {
+            font-size: 14px;
+            margin-top: 0;
+
+        }
+
+        .all-links {
+            display: flex;
+
+            width: 100%;
+            margin-top: 20px;
+            position: absolute;
+
+            justify-content: center;
+        }
+
+        .footer-others {
+            display: flex;
+            justify-content: center;
+            /* Align links in the center */
+            gap: 30px;
+            top: 190px;
+            left: 30%;
+            margin-left: 140px;
+            margin-top: 20px;
+            transform: translateX(-50%);
+        }
+
+
+        .footer-others a {
+            color: #545454;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-separator {
+            width: 90%;
+            height: 1px;
+            background-color: #545454;
+            margin: 10px auto;
+            border: none;
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            margin-top: 20px;
+            transform: translateX(-50%);
+        }
+
+        .footer-text {
+            font-size: 14px;
+            margin-top: 20px;
+            color: #545454;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+
+        }
+
+        @media (max-width: 768px) {
+
+            th,
+            td {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            th:nth-child(1),
+            td:nth-child(1),
+            th:nth-child(3),
+            td:nth-child(3),
+            th:nth-child(5),
+            td:nth-child(5) .form-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-form {
+                margin-right: 14px;
+                margin-bottom: 10px;
+                width: 50%;
+            }
+
+            .approve-delete-form {
+                justify-content: flex-start;
+                width: 50%;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            th,
+            td {
+                padding: 5px;
+                font-size: 12px;
+            }
+
+            .form-container {
+                align-items: flex-start;
+            }
+
+            .search-form input[type="text"] {
+                margin-right: 5px;
+            }
+
+            .search-form select {
+                margin-right: 5px;
+            }
+
+            .approve-delete-form button {
+                margin-right: 3px;
+            }
+        }
     </style>
 </head>
 
@@ -1590,7 +1590,7 @@ if (isset($_POST['claim'])) {
 
         <div class="container">
             <?php if (!empty($successMessage)): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($successMessage) ?></div>
+                <div class="alert alert-success"><?= htmlspecialchars($successMessage) ?></div>
             <?php endif; ?>
             <div class="form-container">
             </div>
@@ -1608,24 +1608,22 @@ if (isset($_POST['claim'])) {
                     </thead>
                     <tbody>
                         <?php if ($result->num_rows > 0): ?>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($row["item_name"]) ?></td>
-                            <td><?= htmlspecialchars($row["category"]) ?></td>
-                            <td><?= htmlspecialchars($row["location_found"]) ?></td>
-                            <td>
-                                <a href="userlostdetailsaapprove.php?_id=<?= htmlspecialchars($row["id"]) ?>"
-                                    class="view-button">View</a>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($row["item_name"]) ?></td>
+                                    <td><?= htmlspecialchars($row["category"]) ?></td>
+                                    <td><?= htmlspecialchars($row["location_found"]) ?></td>
+                                    <td>
+                                        <a href="userlostdetailsaapprove.php?_id=<?= htmlspecialchars($row["id"]) ?>"
+                                            class="view-button">View</a>
 
-                            </td>
-                            <td><?= htmlspecialchars($row["status"]) ?></td>
-
-
+                                    </td>
+                                    <td><?= htmlspecialchars($row["status"]) ?></td>
 
 
-                            <!-- Claim Button -->
 
 
+                                    <!-- Claim Button -->
 
 
 
@@ -1635,19 +1633,21 @@ if (isset($_POST['claim'])) {
 
 
 
-                            <!--           <form action="" method="POST" style="display:inline;" onsubmit="return confirmClaim()">
+
+
+                                    <!--           <form action="" method="POST" style="display:inline;" onsubmit="return confirmClaim()">
                                     <input type="hidden" name="report_id" value="<?php echo $row['id']; ?>">
                                     <button type="submit" class="btn btn-success" name="claim"
                                         aria-label="Claim">Proceed</button>
                                 </form>   -->
 
 
-                        </tr>
-                        <?php endwhile; ?>
+                                </tr>
+                            <?php endwhile; ?>
                         <?php else: ?>
-                        <tr>
-                            <td colspan="8" class="text-center">No reports found</td>
-                        </tr>
+                            <tr>
+                                <td colspan="8" class="text-center">No reports found</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -1697,8 +1697,8 @@ if (isset($_POST['claim'])) {
         <!-- Pagination (optional) -->
         <div class="pagination">
             <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-            <a href="?page=<?php echo $i; ?>&search=<?php echo $search; ?>"
-                <?php echo ($i == $page) ? 'class="active"' : ''; ?>><?php echo $i; ?></a>
+                <a href="?page=<?php echo $i; ?>&search=<?php echo $search; ?>"
+                    <?php echo ($i == $page) ? 'class="active"' : ''; ?>><?php echo $i; ?></a>
             <?php } ?>
         </div>
     </main>
@@ -1727,181 +1727,181 @@ if (isset($_POST['claim'])) {
     </footer>
 
     <script>
-    let savedReportId = null; // store the report ID globally
+        let savedReportId = null; // store the report ID globally
 
-    function showClaimModal(reportId) {
-        savedReportId = reportId; // save report id
-        document.getElementById("confirmationModal").style.display = "block";
-    }
-
-    function hideClaimModal() {
-        document.getElementById("confirmationModal").style.display = "none";
-    }
-
-    function submitClaim() {
-        if (!document.getElementById("confirmation_agreement").checked) {
-            alert("You must confirm that you are the rightful owner before proceeding.");
-            return;
+        function showClaimModal(reportId) {
+            savedReportId = reportId; // save report id
+            document.getElementById("confirmationModal").style.display = "block";
         }
 
-        // create a form dynamically to submit the claim
-        let form = document.createElement("form");
-        form.method = "POST";
-        form.action = ""; // submit to the current page
+        function hideClaimModal() {
+            document.getElementById("confirmationModal").style.display = "none";
+        }
 
-        let input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "report_id";
-        input.value = savedReportId;
+        function submitClaim() {
+            if (!document.getElementById("confirmation_agreement").checked) {
+                alert("You must confirm that you are the rightful owner before proceeding.");
+                return;
+            }
 
-        let claimInput = document.createElement("input");
-        claimInput.type = "hidden";
-        claimInput.name = "claim";
-        claimInput.value = "1"; // simulate claim button being clicked
+            // create a form dynamically to submit the claim
+            let form = document.createElement("form");
+            form.method = "POST";
+            form.action = ""; // submit to the current page
 
-        form.appendChild(input);
-        form.appendChild(claimInput);
-        document.body.appendChild(form);
-        form.submit();
-    }
+            let input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "report_id";
+            input.value = savedReportId;
+
+            let claimInput = document.createElement("input");
+            claimInput.type = "hidden";
+            claimInput.name = "claim";
+            claimInput.value = "1"; // simulate claim button being clicked
+
+            form.appendChild(input);
+            form.appendChild(claimInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 
 
     <SCript>
-    function openModal(reportId) {
-        document.getElementById("confirmationModal").style.display = "block";
-        document.getElementById("report_id").value = reportId; // pass report ID to the modal form
-    }
+        function openModal(reportId) {
+            document.getElementById("confirmationModal").style.display = "block";
+            document.getElementById("report_id").value = reportId; // pass report ID to the modal form
+        }
 
-    function closeModal() {
-        document.getElementById("confirmationModal").style.display = "none";
-    }
+        function closeModal() {
+            document.getElementById("confirmationModal").style.display = "none";
+        }
     </SCript>
     <script>
-    // Function to close the modal by ID
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
+        // Function to close the modal by ID
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
 
-    // Function to open the modal by ID
-    function openModal(modalId) {
-        document.getElementById(modalId).style.display = 'block';
-    }
+        // Function to open the modal by ID
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
 
-    // Show success modal if report submission is successful
-    <?php if (isset($_GET['success']) && $_GET['success'] == 'true') { ?>
-    document.addEventListener('DOMContentLoaded', function() {
-        openModal('successModal');
+        // Show success modal if report submission is successful
+        <?php if (isset($_GET['success']) && $_GET['success'] == 'true') { ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                openModal('successModal');
 
-        // Remove 'success' query parameter from URL to prevent modal from showing again on refresh
-        const url = new URL(window.location.href);
-        url.searchParams.delete('success');
-        window.history.replaceState({}, document.title, url.toString());
-    });
-    <?php } ?>
+                // Remove 'success' query parameter from URL to prevent modal from showing again on refresh
+                const url = new URL(window.location.href);
+                url.searchParams.delete('success');
+                window.history.replaceState({}, document.title, url.toString());
+            });
+        <?php } ?>
 
-    // Show greeting modal only if logged in and no report was submitted
-    <?php if (isset($_SESSION['user_id']) && !isset($_GET['success']) && !isset($_SESSION['greeting_shown'])) { ?>
-    document.addEventListener('DOMContentLoaded', function() {
-        openModal('greetingModal');
-    });
-    <?php } ?>
+        // Show greeting modal only if logged in and no report was submitted
+        <?php if (isset($_SESSION['user_id']) && !isset($_GET['success']) && !isset($_SESSION['greeting_shown'])) { ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                openModal('greetingModal');
+            });
+        <?php } ?>
 
-    // Function to close the modal by ID
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
+        // Function to close the modal by ID
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
 
-    // Function to open the modal by ID
-    function openModal(modalId) {
-        document.getElementById(modalId).style.display = 'block';
-    }
+        // Function to open the modal by ID
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
     </script>
     <script>
-    // Function to ask the user for confirmation before submitting the form
+        // Function to ask the user for confirmation before submitting the form
     </script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <script>
-    // Function to close the modal by ID
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
-
-    // Function to open the modal by ID
-    function openModal(modalId) {
-        document.getElementById(modalId).style.display = 'block';
-    }
-
-    // Show success modal if report submission is successful
-    <?php if (isset($_GET['success']) && $_GET['success'] == 'true') { ?>
-    document.addEventListener('DOMContentLoaded', function() {
-        openModal('successModal');
-
-        // Remove 'success' query parameter from URL to prevent modal from showing again on refresh
-        const url = new URL(window.location.href);
-        url.searchParams.delete('success');
-        window.history.replaceState({}, document.title, url.toString());
-    });
-    <?php } ?>
-
-    // Show greeting modal only if logged in and no report was submitted
-    <?php if (isset($_SESSION['user_id']) && !isset($_GET['success']) && !isset($_SESSION['greeting_shown'])) { ?>
-    document.addEventListener('DOMContentLoaded', function() {
-        openModal('greetingModal');
-    });
-    <?php } ?>
-
-    // Function to close the modal by ID
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
-
-    // Function to open the modal by ID
-    function openModal(modalId) {
-        document.getElementById(modalId).style.display = 'block';
-    }
-
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
-
-    function openModal(modalId) {
-        document.getElementById(modalId).style.display = "block";
-    }
-
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = "none";
-    }
-
-    function openModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) modal.style.display = "block";
-    }
-
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) modal.style.display = "none";
-    }
-
-    function submitTip() {
-        const tip = document.getElementById('tip').value.trim();
-        if (!tip) {
-            alert("Please enter a valid tip.");
-            return;
+        // Function to close the modal by ID
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
-        // Log or send tip to the server
-        console.log("Tip submitted:", tip);
 
-        // Close the modal and reset the form
-        closeModal('tipModal');
-        document.getElementById('tipForm').reset();
-    }
+        // Function to open the modal by ID
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        // Show success modal if report submission is successful
+        <?php if (isset($_GET['success']) && $_GET['success'] == 'true') { ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                openModal('successModal');
+
+                // Remove 'success' query parameter from URL to prevent modal from showing again on refresh
+                const url = new URL(window.location.href);
+                url.searchParams.delete('success');
+                window.history.replaceState({}, document.title, url.toString());
+            });
+        <?php } ?>
+
+        // Show greeting modal only if logged in and no report was submitted
+        <?php if (isset($_SESSION['user_id']) && !isset($_GET['success']) && !isset($_SESSION['greeting_shown'])) { ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                openModal('greetingModal');
+            });
+        <?php } ?>
+
+        // Function to close the modal by ID
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Function to open the modal by ID
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.style.display = "none";
+        }
+
+        function submitTip() {
+            const tip = document.getElementById('tip').value.trim();
+            if (!tip) {
+                alert("Please enter a valid tip.");
+                return;
+            }
+            // Log or send tip to the server
+            console.log("Tip submitted:", tip);
+
+            // Close the modal and reset the form
+            closeModal('tipModal');
+            document.getElementById('tipForm').reset();
+        }
     </script>
 </body>
 

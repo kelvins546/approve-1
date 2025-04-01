@@ -241,7 +241,7 @@ $conn->close();
         flex-direction: column;
         min-height: 100vh;
 
-        background-image: url('images/bgfinalna.png');
+        background-image: url('images/f1.png');
         background-size: cover;
         background-position: center center;
         background-attachment: fixed;
@@ -321,7 +321,7 @@ $conn->close();
 
     .icon-btn {
         background-color: #f4f5f6;
-        border: 2px solid #000;
+        border: 2px solid #ff7701;
         border-radius: 50%;
         cursor: pointer;
         padding: 3px;
@@ -352,27 +352,27 @@ $conn->close();
     .nav-main>.icon-btn:hover {
         background-color: #f4f4f9;
         /* Light background on hover */
-        border-color: #000;
+        border-color: #e66a00;
         /* Darker border on hover */
     }
 
 
 
     .nav-main>.icon-btn:hover .user-icon {
-        color: #000;
+        color: #e66a00;
         /* Darker icon color on hover */
     }
 
     .user-icon {
         font-size: 24px;
         /* Icon size */
-        color: #545454;
+        color: #ff7701 !important;
         transition: color 0.3s ease;
         /* Smooth color change on hover */
     }
 
     .user-icon:hover {
-        color: #545454;
+        color: #e66a00;
         /* Darken color on hover */
     }
 
@@ -950,7 +950,7 @@ $conn->close();
         background-color: #bfbdbc;
         border: 1px solid #545454;
         color: #545454;
-        margin-left: 134px;
+
 
 
 
@@ -1237,9 +1237,10 @@ $conn->close();
     .btn2 {
         display: block;
         align-items: center;
-        color: #545454;
-        background-color: #fdd400;
-        border: 2px solid #545454;
+        color: #fff;
+        background-color: #ff7701;
+        border: none !important;
+
         margin-left: auto;
         margin-right: 0;
         border-radius: 4px;
@@ -1377,10 +1378,9 @@ $conn->close();
                 <a href="found_report.php">Home</a>
                 <a href="guidelines.php">Guidelines</a>
                 <div class="dropdown">
-                    <button class="nav-btn">Browse Reports</button>
+                    <a href="userview.php">Browse Reports</a>
                     <div class="dropdown-content1">
-                        <a href="userview.php">Found Reports</a>
-                        <a href="lost_reports.php">Lost Reports</a>
+
                     </div>
                 </div>
             </div>
@@ -1498,10 +1498,7 @@ $conn->close();
             <div class="btn-container">
                 <a href="usersoloview.php" class="btn btn-back">Back</a>
                 <button id="openModalBtn" class="btn btn-success">Edit</button>
-                <form action="" method="POST" style="display:inline;">
-                    <input type="hidden" name="delete_id" value="<?= htmlspecialchars($row["id"]) ?>">
-                    <button type="submit" class="btn btn-danger" aria-label="Delete Report">Cancel</button>
-                </form>
+
 
             </div>
         </div>
@@ -1517,7 +1514,7 @@ $conn->close();
             <div class="container2">
                 <span id="closeModalBtn" class="close2">&times;</span>
                 <div class="container-title2">
-                    <h2>Editing a LOST item</h2>
+                    <h2>Editing reported item</h2>
                     <p>Please double-check all the information provided</p>
                 </div>
                 <hr>

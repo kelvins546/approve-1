@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
             if (!empty($reportData['picture']) && file_exists($picturePath)) {
                 unlink($picturePath);
             }
-            $successMessage = "Report deleted successfully.";
+            $successMessage = "Report rejected successfully.";
         } else {
             $successMessage = "Error deleting report: " . $stmtDelete->error;
         }
@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
 
 // Handle approve all request
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve_all'])) {
-    $resultSelect = $conn->query("SELECT * FROM pending_found_reports WHERE status = 'Unclaimed'");
+    $resultSelect = $conn->query("SELECT * FROM pending_found_reports");
 
     if ($resultSelect->num_rows > 0) {
         while ($reportData = $resultSelect->fetch_assoc()) {
@@ -207,7 +207,7 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
 // Build the SQL query for counting the total number of entries
-$sqlCount = "SELECT COUNT(*) AS total FROM pending_found_reports WHERE status='unclaimed'";
+$sqlCount = "SELECT COUNT(*) AS total FROM pending_found_reports ";
 if (!empty($search)) {
     $sqlCount .= " AND (item_name LIKE '%$search%' OR location_found LIKE '%$search%' OR category LIKE '%$search%' OR user_id LIKE '%$search%')";
 }
@@ -220,7 +220,7 @@ if ($resultCount) {
 }
 
 // Build the SQL query for fetching reports with limit and search functionality
-$sql = "SELECT * FROM pending_found_reports WHERE status='unclaimed'";
+$sql = "SELECT * FROM pending_found_reports ";
 
 if (!empty($search)) {
     $sql .= " AND (item_name LIKE '%$search%' OR location_found LIKE '%$search%' OR category LIKE '%$search%' OR user_id LIKE '%$search%')";
@@ -385,10 +385,9 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         rel="stylesheet">
     <link rel="stylesheet" href="admin_report.css">
     <style>
+    @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
 
-        @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
-
-        );
+    );
 
     /* General styles */
     * {
@@ -416,10 +415,10 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         background-repeat: no-repeat;
     }
 
-       
 
-     /* Navbar styles */
-     .navbar {
+
+    /* Navbar styles */
+    .navbar {
         background-color: #fff;
         padding: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -445,7 +444,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         margin-bottom: 10px;
     }
 
-     /* UCC */
+    /* UCC */
     .main-title {
         font-family: "Times New Roman", Times, serif;
         font-size: 36px;
@@ -457,9 +456,9 @@ $total_notifications = $claim_count + $found_count + $lost_count;
 
     .subtitle {
         font-family: 'Work Sans', sans-serif;
-        display: block; 
-        font-size: 24px; 
-        color: black; 
+        display: block;
+        font-size: 24px;
+        color: black;
         text-shadow: 0px 0px 0px;
         font-weight: normal;
         padding-left: 3px;
@@ -711,7 +710,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         transition: 0.3s;
         padding-top: 60px;
         box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
-        z-index: 2;
+        z-index: 100;
     }
 
     .side-nav a {
@@ -739,7 +738,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     .side-nav.open {
         width: 250px;
     }
- 
+
 
     /* ++ icon hover */
     .navbar>.icon-btn:hover {
@@ -766,7 +765,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     }
 
     /* -- icon hover */
-    
+
 
     .modal-overlay {
         display: none;
@@ -1214,7 +1213,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         color: white;
     }
 
-    
+
 
 
 
@@ -1224,77 +1223,77 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     /* -----------CONTENT OF THEW WEBSITE ----------------- */
 
     /* start of search btn style */
-        .hr-center {
-                border: none;
-                /* Removes the default border */
-                border-top: 1px solid #fff;
-                width: 20%;
-                margin: 0 auto;
-                padding-bottom: 20px;
+    .hr-center {
+        border: none;
+        /* Removes the default border */
+        border-top: 1px solid #fff;
+        width: 20%;
+        margin: 0 auto;
+        padding-bottom: 20px;
 
-            }
+    }
 
-            .search-container {
-                text-align: center;
-                margin: 20px 0;
-            }
+    .search-container {
+        text-align: center;
+        margin: 20px 0;
+    }
 
-            .search-container h2 {
-                color: #fff;
-                padding-top: 15px;
-                margin-bottom: 9px;
-                margin-top: 10px !important;
-                font-style: bold;
-                font-size: 65px;
-                font-family: 'Work Sans', sans-serif;
-            }
+    .search-container h2 {
+        color: #fff;
+        padding-top: 15px;
+        margin-bottom: 9px;
+        margin-top: 10px !important;
+        font-style: bold;
+        font-size: 65px;
+        font-family: 'Work Sans', sans-serif;
+    }
 
-            .search-form {
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-            }
+    .search-form {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-            .search-input {
-                padding: 10px;
-                width: 500px;
-                border: 2px solid #fff;
-                border-radius: 0px;
-                font-size: 14px;
-                margin-right: 0px;
-                
-            }
+    .search-input {
+        padding: 10px;
+        width: 500px;
+        border: 2px solid #fff;
+        border-radius: 0px;
+        font-size: 14px;
+        margin-right: 0px;
 
-            .search-input:focus {
-                border-radius: 0px;
-                outline: none;
-            }
+    }
 
-            .search-btn {
-                padding: 10px 20px;
-                background-color: #fff;
-                color: white;
-                border: 2px solid #fff;
-                border-radius: 0px;
-                cursor: pointer;
-                font-size: 14px;
-            }
+    .search-input:focus {
+        border-radius: 0px;
+        outline: none;
+    }
 
-            .search-btn:hover {
-                background-color: #d2d2d4;
+    .search-btn {
+        padding: 10px 20px;
+        background-color: #fff;
+        color: white;
+        border: 2px solid #fff;
+        border-radius: 0px;
+        cursor: pointer;
+        font-size: 14px;
+    }
 
-            }
+    .search-btn:hover {
+        background-color: #d2d2d4;
 
-            .search-btn ion-icon {
-                font-size: 14px;
-                color: #FF7701;
+    }
 
-            }
+    .search-btn ion-icon {
+        font-size: 14px;
+        color: #FF7701;
 
-        /* end of search btn style */
+    }
 
-/* limit start*/
-.transparent-form {
+    /* end of search btn style */
+
+    /* limit start*/
+    .transparent-form {
         background: transparent;
         border: none;
         padding: 0;
@@ -1315,10 +1314,11 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         color: #fff;
         font-size: 14px;
     }
-     /* limit end*/
 
-/* Table container styles */
-.table-container {
+    /* limit end*/
+
+    /* Table container styles */
+    .table-container {
         width: 100%;
         overflow-x: auto;
     }
@@ -1365,6 +1365,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         border-radius: 4px;
         cursor: pointer;
     }
+
     /* END table container styles */
 
     /* Pagination: start */
@@ -1399,7 +1400,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         font-size: 14px;
         transition: background-color 0.3s, color 0.3s;
     }
-    
+
     .pagination a.active {
         background-color: #fff;
         color: #545454;
@@ -1410,7 +1411,8 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         background-color: #ddd;
         color: #545454;
     }
-    /* Pagination: end */               
+
+    /* Pagination: end */
 
     /* Footer */
     .footer {
@@ -1518,9 +1520,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         transform: translateX(-50%);
 
     }
-
-
-
     </style>
 </head>
 
@@ -1531,7 +1530,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
             <img src="images/logo.png" alt="Logo" class="navbar-logo">
             <h1 class="main-title">
                 UNIVERSITY OF CALOOCAN CITY
-                <span class="subtitle">  LOST AND FOUND ADMIN</span>
+                <span class="subtitle"> LOST AND FOUND ADMIN</span>
             </h1>
 
             <!-- Claim Reports Dropdown -->
@@ -1609,9 +1608,9 @@ $total_notifications = $claim_count + $found_count + $lost_count;
 
         </div>
         <div class="search-container">
-        <h2>
-            Pending Found Reports
-        </h2>
+            <h2>
+                Pending Found Reports
+            </h2>
 
             <hr class="hr-center">
 

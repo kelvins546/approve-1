@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
             if (!empty($reportData['picture']) && file_exists($picturePath)) {
                 unlink($picturePath);
             }
-            $successMessage = "Report deleted successfully.";
+            $successMessage = "Report rejected successfully.";
         } else {
             $successMessage = "Error deleting report: " . $stmtDelete->error;
         }
@@ -358,9 +358,7 @@ $found_count = count($pendingFoundReports);
 $lost_count = count($pendingLostReports);
 
 // Example: Replace with your actual queries
-$claim_count = $conn->query("SELECT COUNT(*) as count FROM pending_claim_reports")->fetch_assoc()['count'];
-$found_count = $conn->query("SELECT COUNT(*) as count FROM pending_found_reports")->fetch_assoc()['count'];
-$lost_count = $conn->query("SELECT COUNT(*) as count FROM pending_lost_reports")->fetch_assoc()['count'];
+
 
 
 // Total pending notifications
@@ -387,9 +385,10 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         rel="stylesheet">
     <link rel="stylesheet" href="admin_report.css">
     <style>
-                @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
+    @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
 
-        );
+    );
+
     /* General styles */
     * {
         box-sizing: border-box;
@@ -441,8 +440,8 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         margin-bottom: 10px;
     }
 
-     /* UCC */
-     .main-title {
+    /* UCC */
+    .main-title {
         font-family: "Times New Roman", Times, serif;
         font-size: 36px;
         font-weight: bold;
@@ -453,9 +452,9 @@ $total_notifications = $claim_count + $found_count + $lost_count;
 
     .subtitle {
         font-family: 'Work Sans', sans-serif;
-        display: block; 
-        font-size: 24px; 
-        color: black; 
+        display: block;
+        font-size: 24px;
+        color: black;
         text-shadow: 0px 0px 0px;
         font-weight: normal;
         padding-left: 3px;
@@ -474,8 +473,8 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         text-decoration-thickness: 1px;
     }
 
-     /* -----------Dropdown container--------------- */
-     .navbar .dropdown {
+    /* -----------Dropdown container--------------- */
+    .navbar .dropdown {
         position: relative;
         display: inline-block;
     }
@@ -521,6 +520,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     .navbar .dropdown:hover .dropbtn {
         text-decoration: underline;
     }
+
     .dropdown {
         position: relative;
         display: inline-block;
@@ -1076,8 +1076,8 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         /* Optional: Add hover effect */
     }
 
- /* Table container styles */
- .table-container {
+    /* Table container styles */
+    .table-container {
         width: 100%;
         overflow-x: auto;
     }
@@ -1125,6 +1125,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         border-radius: 4px;
         cursor: pointer;
     }
+
     /* END table container styles */
 
     .alert {
@@ -1136,78 +1137,78 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         text-align: center;
     }
 
-     /* start of search btn style */
-     .hr-center {
-                border: none;
-                /* Removes the default border */
-                border-top: 1px solid #fff;
-                width: 20%;
-                margin: 0 auto;
-                padding-bottom: 20px;
+    /* start of search btn style */
+    .hr-center {
+        border: none;
+        /* Removes the default border */
+        border-top: 1px solid #fff;
+        width: 20%;
+        margin: 0 auto;
+        padding-bottom: 20px;
 
-            }
+    }
 
-            .search-container {
-                text-align: center;
-                margin: 20px 0;
-            }
+    .search-container {
+        text-align: center;
+        margin: 20px 0;
+    }
 
-            .search-container h2 {
-                color: #fff;
-                padding-top: 15px;
-                margin-bottom: 9px;
-                margin-top: 10px !important;
-                font-style: bold;
-                font-size: 65px;
-                font-family: 'Work Sans', sans-serif;
-            }
+    .search-container h2 {
+        color: #fff;
+        padding-top: 15px;
+        margin-bottom: 9px;
+        margin-top: 10px !important;
+        font-style: bold;
+        font-size: 65px;
+        font-family: 'Work Sans', sans-serif;
+    }
 
-            .search-form {
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-            }
+    .search-form {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-            .search-input {
-                padding: 10px;
-                width: 500px;
-                border: 2px solid #fff;
-                border-radius: 0px;
-                font-size: 14px;
-                margin-right: 0px;
-                
-            }
+    .search-input {
+        padding: 10px;
+        width: 500px;
+        border: 2px solid #fff;
+        border-radius: 0px;
+        font-size: 14px;
+        margin-right: 0px;
 
-            .search-input:focus {
-                border-radius: 0px;
-                outline: none;
-            }
+    }
 
-            .search-btn {
-                padding: 10px 20px;
-                background-color: #fff;
-                color: white;
-                border: 2px solid #fff;
-                border-radius: 0px;
-                cursor: pointer;
-                font-size: 14px;
-            }
+    .search-input:focus {
+        border-radius: 0px;
+        outline: none;
+    }
 
-            .search-btn:hover {
-                background-color: #d2d2d4;
+    .search-btn {
+        padding: 10px 20px;
+        background-color: #fff;
+        color: white;
+        border: 2px solid #fff;
+        border-radius: 0px;
+        cursor: pointer;
+        font-size: 14px;
+    }
 
-            }
+    .search-btn:hover {
+        background-color: #d2d2d4;
 
-            .search-btn ion-icon {
-                font-size: 14px;
-                color: #FF7701;
+    }
 
-            }
+    .search-btn ion-icon {
+        font-size: 14px;
+        color: #FF7701;
 
-        /* end of search btn style */
+    }
 
-        /* limit start*/
-.transparent-form {
+    /* end of search btn style */
+
+    /* limit start*/
+    .transparent-form {
         background: transparent;
         border: none;
         padding: 0;
@@ -1228,7 +1229,8 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         color: #fff;
         font-size: 14px;
     }
-     /* limit end*/
+
+    /* limit end*/
 
 
     /* Button styles */
@@ -1257,8 +1259,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         color: #fff;
         font-weight: bold;
         padding: 5px 23px;
-        border: 1px solid #545454;
-
+        border-radius: 6px;
     }
 
     table tr:nth-child(even) .btn-danger {
@@ -1266,7 +1267,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         color: #fff;
         font-weight: bold;
         padding: 5px 23px;
-        border: 1px solid #545454;
+        border-radius: 6px;
 
     }
 
@@ -1275,7 +1276,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         color: #fff;
         font-weight: bold;
         padding: 5px 23px;
-        border: 1px solid #545454;
+        border-radius: 6px;
 
     }
 
@@ -1285,7 +1286,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         color: #fff;
         font-weight: bold;
         padding: 5px 23px;
-        border: 1px solid #545454;
+        border-radius: 6px;
     }
 
 
@@ -1325,7 +1326,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         margin-bottom: 20px;
     }
 
-     /* Pagination: start */
+    /* Pagination: start */
     .pagination-info {
         font-size: 14px;
         color: #fff;
@@ -1357,7 +1358,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         font-size: 14px;
         transition: background-color 0.3s, color 0.3s;
     }
-    
+
     .pagination a.active {
         background-color: #fff;
         color: #545454;
@@ -1368,7 +1369,8 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         background-color: #ddd;
         color: #545454;
     }
-    /* Pagination: end */  
+
+    /* Pagination: end */
 
 
     .approve-delete-form {
@@ -1382,7 +1384,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         margin-right: 5px;
     }
 
-    /* Footer */ 
+    /* Footer */
     .footer {
         background-color: #fff;
         padding: 20px 0;
@@ -1572,7 +1574,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
             <img src="images/logo.png" alt="Logo" class="navbar-logo">
             <h1 class="main-title">
                 UNIVERSITY OF CALOOCAN CITY
-                <span class="subtitle">  LOST AND FOUND ADMIN</span>
+                <span class="subtitle"> LOST AND FOUND ADMIN</span>
             </h1>
 
             <!-- Claim Reports Dropdown -->

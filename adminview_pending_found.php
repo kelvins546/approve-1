@@ -181,7 +181,7 @@ $conn->close();
         flex-direction: column;
         min-height: 100vh;
 
-        background-image: url('images/bg1.png');
+        background-image: url('images/blur\ brown.png');
         background-size: cover;
         background-position: center center;
         background-attachment: fixed;
@@ -667,13 +667,7 @@ $conn->close();
 </head>
 
 <body>
-    <div class="navbar">
-        <img src="images/logo.png" alt="Logo" class="navbar-logo">
-        <span class="navbar-text">UNIVERSITY OF CALOOCAN CITY</span>
-        <a href="found_report.php">Home</a>
-        <a href="submit_report.php">Guidelines</a>
-        <a href="userview.php">Browse Reports</a>
-    </div>
+
     <div class="container-wrapper">
         <div class="container">
             <div class="container-title">
@@ -759,11 +753,11 @@ $conn->close();
             <div class="btn-container">
                 <a href="pending_found_report.php" class="btn btn-back">Back</a>
                 <form method="POST">
-                    <button type="submit" name="approve" class="btn btn-success">Approve</button>
+                    <button type="submit" name="approve" class="btn btn-success">Receive</button>
                 </form>
                 <form method="POST">
                     <button class="btn btn-danger" type="submit" name="delete"
-                        onclick="return confirm('Are you sure you want to delete this item?');">Reject</button>
+                        onclick="return confirm('Are you sure you want to reject this request?');">Reject</button>
                 </form>
 
 
@@ -772,30 +766,7 @@ $conn->close();
     </div>
 
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">
 
-            </div>
-            <div class="all-links">
-                <nav class="footer-others">
-                    <a href="">ABOUT US</a>
-                    <a href="">TERMS</a>
-                    <a href="">FAQ</a>
-                    <a href="">PRIVACY</a>
-                </nav>
-            </div>
-
-
-            <div class="footer-contact">
-                <h4>Contact us</h4>
-                <p>This website is currently under construction. For futher inquires, please contact us at
-                    starcity@gmailcom</p>
-            </div>
-            <hr class="footer-separator">
-            <p class="footer-text">&copy; Star City, All rights reserved.</p>
-        </div>
-    </footer>
 </body>
 
 </html>

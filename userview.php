@@ -135,24 +135,32 @@ $successMessage = ''; // Initialize success message
 if (isset($_POST['claim'])) {
     $report_id = $_POST['report_id'];
 
-    // fetch from both approved_found_reports and pending_found_reports
-    $query = "SELECT * FROM approved_found_reports WHERE id = ? 
-              UNION 
-              SELECT * FROM pending_found_reports WHERE id = ?";
+    // Check in pending_found_reports first
+    $query = "SELECT * FROM pending_found_reports WHERE id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ii", $report_id, $report_id);
+    $stmt->bind_param("i", $report_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $item = $result->fetch_assoc();
 
+    // If not found in pending_found_reports, check in approved_found_reports
+    if (!$item) {
+        $query = "SELECT * FROM approved_found_reports WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $report_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $item = $result->fetch_assoc();
+    }
+
     if ($item) {
-        // insert into pending_claim_reports
+        $status = isset($item['status']) ? $item['status'] : 'unclaimed'; // Ensure status exists
+
+        // Insert into pending_claim_reports
         $insert_query = "INSERT INTO pending_claim_reports 
                         (user_id, item_name, category, brand, primary_color, description, picture, location_found, date_found, time_found, status, position) 
                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
         $position = "Pending";
-        $status = $item['status'];
 
         $insert_stmt = $conn->prepare($insert_query);
         $insert_stmt->bind_param(
@@ -172,17 +180,13 @@ if (isset($_POST['claim'])) {
         );
         $insert_stmt->execute();
 
-        // delete from approved_found_reports
-        $delete_approved_query = "DELETE FROM approved_found_reports WHERE id = ?";
-        $delete_approved_stmt = $conn->prepare($delete_approved_query);
-        $delete_approved_stmt->bind_param("i", $report_id);
-        $delete_approved_stmt->execute();
-
-        // delete from pending_found_reports
-        $delete_pending_query = "DELETE FROM pending_found_reports WHERE id = ?";
-        $delete_pending_stmt = $conn->prepare($delete_pending_query);
-        $delete_pending_stmt->bind_param("i", $report_id);
-        $delete_pending_stmt->execute();
+        // Delete from the original table (where it was found)
+        if (isset($item['id'])) {
+            $delete_query = "DELETE FROM " . ($item['status'] === 'approved' ? 'approved_found_reports' : 'pending_found_reports') . " WHERE id = ?";
+            $delete_stmt = $conn->prepare($delete_query);
+            $delete_stmt->bind_param("i", $item['id']);
+            $delete_stmt->execute();
+        }
 
         $_SESSION['message'] = 'Your claim request for the item has been successfully submitted!';
         header("Location: userview.php?success=true");
@@ -191,6 +195,7 @@ if (isset($_POST['claim'])) {
         echo "Item not found.";
     }
 }
+
 
 
 
@@ -216,14 +221,14 @@ if (isset($_POST['claim'])) {
         href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=League+Spartan:wght@100..900&family=Londrina+Outline&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik+80s+Fade&family=Rubik+Burned&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet">
 
-        
+
     <link rel="stylesheet" href="admin_report.css">
 
-    
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
 
-        );
+    <style>
+    @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
+
+    );
 
     /* General styles */
     * {
@@ -323,7 +328,7 @@ if (isset($_POST['claim'])) {
 
     .icon-btn {
         background-color: #f4f5f6;
-        border: 2px solid #000;
+        border: 2px solid #ff7701;
         border-radius: 50%;
         cursor: pointer;
         padding: 3px;
@@ -354,27 +359,27 @@ if (isset($_POST['claim'])) {
     .nav-main>.icon-btn:hover {
         background-color: #f4f4f9;
         /* Light background on hover */
-        border-color: #000;
+        border-color: #e66a00;
         /* Darker border on hover */
     }
 
 
 
     .nav-main>.icon-btn:hover .user-icon {
-        color: #000;
+        color: #e66a00;
         /* Darker icon color on hover */
     }
 
     .user-icon {
         font-size: 24px;
         /* Icon size */
-        color: #545454;
+        color: #ff7701 !important;
         transition: color 0.3s ease;
         /* Smooth color change on hover */
     }
 
     .user-icon:hover {
-        color: #545454;
+        color: #e66a00;
         /* Darken color on hover */
     }
 
@@ -1119,6 +1124,7 @@ if (isset($_POST['claim'])) {
         border-radius: 4px;
         cursor: pointer;
     }
+
     /* START Table container styles */
 
 
@@ -1189,6 +1195,7 @@ if (isset($_POST['claim'])) {
         color: #FF7701;
 
     }
+
     /* end of search btn style */
 
     .text-center {
@@ -1217,7 +1224,8 @@ if (isset($_POST['claim'])) {
         color: #fff;
         font-size: 14px;
     }
-     /* limit end*/
+
+    /* limit end*/
 
 
     /* Button styles */
@@ -1309,7 +1317,7 @@ if (isset($_POST['claim'])) {
         font-size: 14px;
         transition: background-color 0.3s, color 0.3s;
     }
-    
+
     .pagination a.active {
         background-color: #fff;
         color: #545454;
@@ -1320,6 +1328,7 @@ if (isset($_POST['claim'])) {
         background-color: #ddd;
         color: #545454;
     }
+
     /* Pagination: end */
 
 
@@ -1497,10 +1506,9 @@ if (isset($_POST['claim'])) {
                     <a href="found_report.php">Home</a>
                     <a href="guidelines.php">Guidelines</a>
                     <div class="dropdown">
-                        <button class="nav-btn">Browse Reports</button>
+                        <a href="userview.php">Browse Reports</a>
                         <div class="dropdown-content1">
-                            <a href="userview.php">Found Reports</a>
-                            <a href="lost_reports.php">Lost Reports</a>
+
                         </div>
                     </div>
                 </div>
@@ -1551,7 +1559,7 @@ if (isset($_POST['claim'])) {
 
                 <div class="button-container">
                     <button class="btn-ok" onclick="closeModal('successModal')">OKAY</button>
-                    <button class="btn-ok12" onclick="openModal('tipModal')">Add Tip</button>
+
                 </div>
             </div>
         </div>
@@ -1576,7 +1584,7 @@ if (isset($_POST['claim'])) {
             <h2>
                 Browse Found Items
             </h2>
-            
+
 
             <hr class="hr-center">
 
@@ -1627,7 +1635,7 @@ if (isset($_POST['claim'])) {
                                     class="view-button">View</a>
 
                             </td>
-                            <td><?= htmlspecialchars($row["status"]) ?></td>
+                            <td><?= htmlspecialchars($row["position"]) ?></td>
                             <td>
 
 

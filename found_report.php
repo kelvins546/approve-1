@@ -239,7 +239,7 @@ $conn->close();
         color: #545454;
         flex-direction: column;
         min-height: 100vh;
-        background-color: #2b4257;
+        background-color: #fff;
     }
 
     /* Navbar styles */
@@ -315,7 +315,7 @@ $conn->close();
 
     .icon-btn {
         background-color: #f4f5f6;
-        border: 2px solid #000;
+        border: 2px solid #ff7701;
         border-radius: 50%;
         cursor: pointer;
         padding: 3px;
@@ -346,27 +346,27 @@ $conn->close();
     .nav-main>.icon-btn:hover {
         background-color: #f4f4f9;
         /* Light background on hover */
-        border-color: #000;
+        border-color: #e66a00;
         /* Darker border on hover */
     }
 
 
 
     .nav-main>.icon-btn:hover .user-icon {
-        color: #000;
+        color: #e66a00;
         /* Darker icon color on hover */
     }
 
     .user-icon {
         font-size: 24px;
         /* Icon size */
-        color: #545454;
+        color: #ff7701 !important;
         transition: color 0.3s ease;
         /* Smooth color change on hover */
     }
 
     .user-icon:hover {
-        color: #545454;
+        color: #e66a00;
         /* Darken color on hover */
     }
 
@@ -992,8 +992,8 @@ $conn->close();
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-       /* Footer */
-       .footer {
+    /* Footer */
+    .footer {
         background-color: #fff;
         padding: 20px 0;
         margin-top: 60px;
@@ -1098,12 +1098,7 @@ $conn->close();
         left: 50%;
         transform: translateX(-50%);
 
-    }   
-
-    
-    
-
-    
+    }
     </style>
 </head>
 
@@ -1117,10 +1112,9 @@ $conn->close();
                 <a href="found_report.php">Home</a>
                 <a href="guidelines.php">Guidelines</a>
                 <div class="dropdown">
-                    <button class="nav-btn">Browse Reports</button>
+                    <a href="userview.php">Browse Reports</a>
                     <div class="dropdown-content1">
-                        <a href="userview.php">Found Reports</a>
-                        <a href="lost_reports.php">Lost Reports</a>
+
                     </div>
                 </div>
             </div>
@@ -1234,13 +1228,7 @@ $conn->close();
             <?php endif; ?>
 
             <form method="POST" action="" enctype="multipart/form-data">
-                <!-- Step Navigation 
-                <div class="step-navigation">
-                    <button type="button" class="btn" onclick="showStep(1)">Step 1</button>
-                    <button type="button" class="btn" onclick="showStep(2)" disabled>Step 2</button>
-                    <button type="button" class="btn" onclick="showStep(3)" disabled>Step 3</button>
-                </div>
--->
+
                 <!-- Step 1: Item Information -->
                 <div class="step" id="step1">
                     <h3>Step 1: Item Information</h3>

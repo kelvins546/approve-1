@@ -1,9 +1,11 @@
 <?php
+session_start();
+
 // Database connection
-$servername = "localhost";   // Your server name
-$username = "root";          // Your database username
-$password = "";              // Your database password (empty by default for XAMPP)
-$database = "approve";       // Your database name
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "approve";
 
 $conn = new mysqli($servername, $username, $password, $database);
 
@@ -29,14 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
 
-        // Compare the plain text password with the one in the database
-        if ($password === $user['card_password']) {
-            // Password is correct, start a session or redirect the user
-            session_start();
+
+        if ($user['status'] == 'suspended') {
+            header("Location: login.php?suspended=true");
+            exit();
+        }
+
+        // Check if password matches (assuming plain text)
+        elseif ($password === $user['card_password']) {
+            // Start session
             $_SESSION['user_id'] = $user['card_number'];
             $_SESSION['name'] = $user['name'];
+            $_SESSION['role'] = $user['role'];
 
-            // Redirect to user dashboard or homepage
+            // Redirect based on role
             header("Location: found_report.php");
             exit();
         } else {
@@ -47,6 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt->close();
+}
+
+// Check if there's a message passed via URL (for suspended accounts, etc.)
+if (isset($_GET['message'])) {
+    $errorMessage = urldecode($_GET['message']);
 }
 
 $conn->close();
@@ -96,7 +109,7 @@ $conn->close();
     .LAFh1 {
         font-family: "League Spartan", sans-serif;
         font-weight: bold;
-        
+
     }
 
     .paragLOGIN {
@@ -210,7 +223,7 @@ $conn->close();
         color: #fff;
         border-radius: 0px;
         margin-left: 100px;
-        
+
     }
 
     .info-container h1 {
@@ -449,6 +462,126 @@ $conn->close();
         margin-bottom: 10px;
         text-align: center;
     }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 999999;
+    }
+
+    .modal-content1 {
+        background: white;
+        padding: 30px;
+        color: #545454;
+        border-radius: 10px;
+        border: 1px solid #888;
+        width: 500px;
+        max-width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.3s ease-out;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .modal-title1 {
+        text-align: center;
+    }
+
+    .modal-title1 h3 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .modal-title1 p {
+        margin-bottom: 20px;
+        /* Improved spacing */
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* Confirmation section styling */
+    .confirmation-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f9f9f9;
+        border-left: 4px solid #f39c12;
+        border-radius: 5px;
+    }
+
+    .confirmation-section h3 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .confirmation-section p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #333;
+        margin-top: 10px;
+    }
+
+    .form-group {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .form-group input[type="checkbox"] {
+        width: 12px;
+
+        height: 12px;
+        cursor: pointer;
+        flex-shrink: 0;
+        margin: 0;
+
+    }
+
+    .form-group label {
+        font-size: 14px;
+        line-height: 1.5;
+        cursor: pointer;
+        display: flex;
+        flex-grow: 1;
+        text-align: left;
+    }
+
+
+    /* ✅ Button centered */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .btn-success {
+        padding: 10px 20px;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-success:disabled {
+        background-color: gray;
+        cursor: not-allowed;
+    }
+
+    .btn-success:hover:enabled {
+        background-color: darkgreen;
+    }
     </style>
 </head>
 
@@ -464,6 +597,56 @@ $conn->close();
                 <a href="#">Browse Reports</a>
             </div>
         </div>
+        <div id="confirmationModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content1">
+                <div class="modal-title1">
+                    <h3>Notice of Investigation</h3>
+                    <p>Your account is currently under review due to discrepancies identified in your recent claim
+                        submission.</p>
+                </div>
+                <hr>
+
+                <div class="confirmation-section">
+                    <h3>Important Notice</h3>
+                    <p>Submitting false claims or attempting to claim items that do not belong
+                        to you is a serious offense. Such actions may lead to legal proceedings under <strong>Article
+                            308 of the Revised Penal Code of the Philippines (Theft)</strong> and other relevant laws,
+                        potentially resulting in criminal charges, fines, and penalties.</p>
+                    <p>If you believe this review is unwarranted, you may appeal by visiting the Lost and Found Help
+                        Desk within 7 days from the date of this notice. Failure to respond within this timeframe may
+                        lead to further actions, including possible legal proceedings.
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" id="acknowledgeCheckbox">
+                    <label for="acknowledgeCheckbox"><strong>I acknowledge that my account is currently under review due
+                            to discrepancies in my recent claim and understand that providing false information may lead
+                            to legal consequences.</strong></label>
+                </div>
+
+                <div class="button-container">
+                    <button type="button" class="btn btn-success" id="proceedButton" disabled>Proceed</button>
+                </div>
+            </div>
+        </div>
+        <script>
+        document.getElementById("acknowledgeCheckbox").addEventListener("change", function() {
+            document.getElementById("proceedButton").disabled = !this.checked;
+        });
+
+        // Close the modal when "Proceed" is clicked
+        document.getElementById("proceedButton").addEventListener("click", function() {
+            if (!this.disabled) { // ✅ Ensure it's only clickable when enabled
+                document.getElementById("confirmationModal").style.display = "none";
+            }
+        });
+        </script>
+
+
+
+
+
 
 
         <!-- Form container -->
@@ -486,10 +669,10 @@ $conn->close();
 
                 <form action="login.php" method="post">
                     <div class="form-group">
-                        <label for="cardNumber">Student ID:</label>
+                        <label for="cardNumber">Student ID/Utility ID/Faculty ID:</label>
                         <input type="text" id="cardNumber" name="cardNumber" required maxlength="11"
-                            placeholder="20230277-N">
-                        <label for="" class="label-under">Enter your student ID.</label>
+                            placeholder="20230277-N/20230277-U/20230277-F">
+                        <label for="" class="label-under">Enter your student ID/Utility ID/Faculty ID.</label>
                     </div>
 
                     <div class="form-group">
@@ -553,6 +736,26 @@ $conn->close();
         }
     }
     </script>
+    <script>
+    // Function to show the modal
+    function showSuspensionModal() {
+        document.getElementById("confirmationModal").style.display = "block";
+    }
+
+    // Function to hide the modal
+    function hideClaimModal() {
+        document.getElementById("confirmationModal").style.display = "none";
+    }
+
+    // Check if the user was redirected due to suspension
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("suspended") === "true") {
+            showSuspensionModal();
+        }
+    };
+    </script>
+
 
 
 

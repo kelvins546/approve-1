@@ -466,7 +466,7 @@ Lost' : 'Report');
 
     .icon-btn {
         background-color: #f4f5f6;
-        border: 2px solid #000;
+        border: 2px solid #ff7701;
         border-radius: 50%;
         cursor: pointer;
         padding: 3px;
@@ -497,27 +497,27 @@ Lost' : 'Report');
     .nav-main>.icon-btn:hover {
         background-color: #f4f4f9;
         /* Light background on hover */
-        border-color: #000;
+        border-color: #e66a00;
         /* Darker border on hover */
     }
 
 
 
     .nav-main>.icon-btn:hover .user-icon {
-        color: #000;
+        color: #e66a00;
         /* Darker icon color on hover */
     }
 
     .user-icon {
         font-size: 24px;
         /* Icon size */
-        color: #545454;
+        color: #ff7701 !important;
         transition: color 0.3s ease;
         /* Smooth color change on hover */
     }
 
     .user-icon:hover {
-        color: #545454;
+        color: #e66a00;
         /* Darken color on hover */
     }
 
@@ -1002,10 +1002,9 @@ Lost' : 'Report');
                 <a href="found_report.php">Home</a>
                 <a href="guidelines.php">Guidelines</a>
                 <div class="dropdown">
-                    <button class="nav-btn">Browse Reports</button>
+                    <a href="userview.php">Browse Reports</a>
                     <div class="dropdown-content1">
-                        <a href="userview.php">Found Reports</a>
-                        <a href="lost_reports.php">Lost Reports</a>
+
                     </div>
                 </div>
             </div>
@@ -1045,7 +1044,7 @@ Lost' : 'Report');
         <div class="container">
 
             <div class="title-cont">
-                <h2><strong>CLAIM </strong>REPORTS</h2>
+                <h2>REQUEST <strong>CLAIM</strong> REPORTS</h2>
             </div>
             <div class="reports-grid">
                 <!-- Pending Found Reports -->
@@ -1088,11 +1087,11 @@ Lost' : 'Report');
                             <input type="hidden" name="table" value="pending_claim_reports">
 
                         </form>
-                        <form method="post" action="usersoloviewclaim.php">
+                        <!--       <form method="post" action="usersoloviewclaim.php">
                             <input type="hidden" name="table" value="pending_claim_reports">
                             <input type="hidden" name="delete_id" value="<?= $row['id']; ?>">
                             <button type="submit" class="btn-action btn-cancel">Cancel</button>
-                        </form>
+                        </form> -->
                     </div>
                 </div>
                 <?php endwhile; ?>

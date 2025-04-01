@@ -16,6 +16,15 @@ if ($conn->connect_error) {
 }
 $successMessage = '';
 
+session_start(); // Start the session to access the message
+
+// Display the message if it's set
+if (isset($_SESSION['message'])) {
+    $successMessage = $_SESSION['message'];
+    unset($_SESSION['message']); // Clear the session message after displaying it
+} else {
+    $successMessage = ''; // Set empty if no message exists
+}
 // Check if there is a message in the URL
 if (isset($_GET['message'])) {
     $successMessage = urldecode($_GET['message']);
@@ -37,18 +46,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve_id'])) {
 
         // Insert into approved_reports
         // Assign 'Unclaimed' to a variable
-        $status = 'Unclaimed';
-
+        $status = 'Lost';
+        $position = 'on staff';
+        // Prepare the query
         $stmtInsert = $conn->prepare("
-    INSERT INTO approved_lost_reports 
-    (item_name, date_found, category, time_found, brand, location_found, 
-     primary_color, picture, description, first_name, last_name, phone_number, 
-     email, status) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-");
+        INSERT INTO approved_lost_reports 
+        (item_name, date_found, category, time_found, brand, location_found, 
+        primary_color, picture, description, status) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
 
+        if (!$stmtInsert) {
+            die("Error preparing the query: " . $conn->error);
+        }
+
+        // Bind the parameters
         $stmtInsert->bind_param(
-            "ssssssssssssss", // 14 placeholders
+            "ssssssssss",
             $reportData['item_name'],
             $reportData['date_found'],
             $reportData['category'],
@@ -58,14 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve_id'])) {
             $reportData['primary_color'],
             $reportData['picture'],
             $reportData['description'],
-            $reportData['first_name'],
-            $reportData['last_name'],
-            $reportData['phone_number'],
-            $reportData['email'],
-            $status // Pass the status variable, which is 'Unclaimed'
+            $status
         );
-
-
 
 
         if ($stmtInsert->execute()) {
@@ -111,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
             if (!empty($reportData['picture']) && file_exists($picturePath)) {
                 unlink($picturePath);
             }
-            $successMessage = "Report deleted successfully.";
+            $successMessage = "Report rejected successfully.";
         } else {
             $successMessage = "Error deleting report: " . $stmtDelete->error;
         }
@@ -122,71 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     $stmtSelect->close();
 }
 
-// Handle approve all request
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve_all'])) {
-    $resultSelect = $conn->query("SELECT * FROM pending_lost_reports WHERE status = 'Unclaimed'");
 
-    if ($resultSelect->num_rows > 0) {
-        while ($reportData = $resultSelect->fetch_assoc()) {
-            $stmtInsert = $conn->prepare("
-                INSERT INTO approved_lost_reports 
-                (item_name, date_found, category, time_found, brand, location_found, 
-                 primary_color, picture, description, first_name, last_name, phone_number, 
-                 email, status) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ");
-            $stmtInsert->bind_param(
-                "ssssssssssssss",
-                $reportData['item_name'],
-                $reportData['date_found'],
-                $reportData['category'],
-                $reportData['time_found'],
-                $reportData['brand'],
-                $reportData['location_found'],
-                $reportData['primary_color'],
-                $reportData['picture'],
-                $reportData['description'],
-                $reportData['first_name'],
-                $reportData['last_name'],
-                $reportData['phone_number'],
-                $reportData['email'],
-                $reportData['status']
-            );
-
-            if ($stmtInsert->execute()) {
-                $stmtDelete = $conn->prepare("DELETE FROM pending_lost_reports WHERE id = ?");
-                $stmtDelete->bind_param("i", $reportData['id']);
-                $stmtDelete->execute();
-                $stmtDelete->close();
-
-                if (!empty($reportData['picture']) && file_exists("uploads/pending/" . $reportData['picture'])) {
-                    rename("uploads/pending/" . $reportData['picture'], "uploads/approved/" . $reportData['picture']);
-                }
-            }
-            $stmtInsert->close();
-        }
-        $successMessage = "All reports approved successfully.";
-    } else {
-        $successMessage = "No reports to approve.";
-    }
-}
-
-// Handle delete all request
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_all'])) {
-    $resultSelect = $conn->query("SELECT picture FROM pending_lost_reports WHERE status = 'Unclaimed'");
-
-    if ($resultSelect->num_rows > 0) {
-        while ($reportData = $resultSelect->fetch_assoc()) {
-            if (!empty($reportData['picture']) && file_exists("uploads/pending/" . $reportData['picture'])) {
-                unlink("uploads/pending/" . $reportData['picture']);
-            }
-        }
-        $conn->query("DELETE FROM pending_lost_reports WHERE status = 'Unclaimed'");
-        $successMessage = "All reports deleted successfully.";
-    } else {
-        $successMessage = "No reports to delete.";
-    }
-}
 
 // Initialize search
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
@@ -202,7 +146,7 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
 // Build the SQL query for counting the total number of entries
-$sqlCount = "SELECT COUNT(*) AS total FROM pending_lost_reports WHERE status='unclaimed'";
+$sqlCount = "SELECT COUNT(*) AS total FROM pending_lost_reports WHERE status='Lost'";
 if (!empty($search)) {
     $sqlCount .= " AND (item_name LIKE '%$search%' OR location_found LIKE '%$search%' OR category LIKE '%$search%' OR user_id LIKE '%$search%')";
 }
@@ -215,7 +159,7 @@ if ($resultCount) {
 }
 
 // Build the SQL query for fetching reports with limit and search functionality
-$sql = "SELECT * FROM pending_lost_reports WHERE status='unclaimed'";
+$sql = "SELECT * FROM pending_lost_reports WHERE status='Lost'";
 
 if (!empty($search)) {
     $sql .= " AND (item_name LIKE '%$search%' OR location_found LIKE '%$search%' OR category LIKE '%$search%' OR user_id LIKE '%$search%')";
@@ -238,22 +182,6 @@ if ($limit == 10000) {
 // Calculate the range for the current page
 $currentEntriesStart = $offset + 1;  // First entry on this page
 $currentEntriesEnd = min($offset + $limit, $totalRecords);  // Last entry on this page
-
-$successMessage = '';
-
-session_start(); // Start the session to access the message
-
-// Display the message if it's set
-if (isset($_SESSION['message'])) {
-    $successMessage = $_SESSION['message'];
-    unset($_SESSION['message']); // Clear the session message after displaying it
-} else {
-    $successMessage = ''; // Set empty if no message exists
-}
-// Check if there is a message in the URL
-if (isset($_GET['message'])) {
-    $successMessage = urldecode($_GET['message']);
-}
 
 
 $userName = htmlspecialchars($_SESSION['name'] ?? 'User');
@@ -369,6 +297,9 @@ $claim_count = count($pendingClaimReports);
 $found_count = count($pendingFoundReports);
 $lost_count = count($pendingLostReports);
 
+// Example: Replace with your actual queries
+
+
 // Total pending notifications
 $total_notifications = $claim_count + $found_count + $lost_count;
 
@@ -385,7 +316,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pending Found Reports</title>
+    <title>Lost Reports</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -395,7 +326,9 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     <style>
     @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
 
-);
+    );
+
+    /* General styles */
     * {
         box-sizing: border-box;
         margin: 0;
@@ -421,8 +354,10 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         background-repeat: no-repeat;
     }
 
-     /* Navbar styles */
-     .navbar {
+
+
+    /* Navbar styles */
+    .navbar {
         background-color: #fff;
         padding: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -436,55 +371,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         /* Center items vertically */
         justify-content: space-between;
         /* Distribute space between items */
-    
-    }
-
-    /* Navbar styles */
-    .navbar {
-        background-color: #fff;
-        padding: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        color: #545454;
-        position: sticky;
-        top: 0;
-
-        width: 100%;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-      /* UCC */
-      .main-title {
-        font-family: "Times New Roman", Times, serif;
-        font-size: 36px;
-        font-weight: bold;
-        white-space: nowrap;
-        color: #000 !important;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .subtitle {
-        font-family: 'Work Sans', sans-serif;
-        display: block; 
-        font-size: 24px; 
-        color: black; 
-        text-shadow: 0px 0px 0px;
-        font-weight: normal;
-        padding-left: 3px;
-    }
-
-    .navbar a {
-        color: #545454;
-        text-decoration: none;
-        margin: 20px;
-        display: flex;
-        margin-top: 12px;
-    }
-
-    .navbar a:hover {
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
     }
 
     .navbar-logo {
@@ -497,8 +383,41 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         margin-bottom: 10px;
     }
 
-     /* -----------Dropdown container--------------- */
-     .navbar .dropdown {
+    /* UCC */
+    .main-title {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 36px;
+        font-weight: bold;
+        white-space: nowrap;
+        color: #000 !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .subtitle {
+        font-family: 'Work Sans', sans-serif;
+        display: block;
+        font-size: 24px;
+        color: black;
+        text-shadow: 0px 0px 0px;
+        font-weight: normal;
+        padding-left: 3px;
+    }
+
+    .navbar a {
+        color: #545454;
+        text-decoration: none;
+        margin: 20px;
+        display: flex;
+        margin-top: 10px;
+    }
+
+    .navbar a:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+    }
+
+    /* navbar dropdown container */
+    .navbar .dropdown {
         position: relative;
         display: inline-block;
     }
@@ -531,19 +450,23 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         padding: 6px 10px;
         text-decoration: none;
         display: block;
+
     }
 
     .navbar .dropdown-content a:hover {
         text-decoration: underline;
     }
 
+    /* Show the dropdown content on hover */
     .navbar .dropdown:hover .dropdown-content {
         display: block;
     }
 
+    /* Show the dropdown button on hover */
     .navbar .dropdown:hover .dropbtn {
         text-decoration: underline;
     }
+
     .dropdown {
         position: relative;
         display: inline-block;
@@ -615,7 +538,13 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         background-color: #ccc
     }
 
-    /* -----------Dropdown container--------------- */
+
+
+
+
+
+
+    /* notif button */
 
     .notif-btn {
         position: relative;
@@ -629,7 +558,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         margin-right: -70px;
         margin-top: 10px;
     }
-
 
     .notif-badge {
         position: absolute;
@@ -655,11 +583,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         /* Slight zoom effect */
         transition: 0.2s ease-in-out;
     }
-
-
-
-
-
 
     .navbar>.icon-btn {
         background-color: #f4f5f6;
@@ -707,7 +630,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     }
 
     .hamburger-icon span {
-        background-color: black;
+        background-color: #545454;
         height: 3px;
         width: 100%;
         border-radius: 2px;
@@ -726,7 +649,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         transition: 0.3s;
         padding-top: 60px;
         box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
-        z-index: 2;
+        z-index: 100;
     }
 
     .side-nav a {
@@ -756,108 +679,32 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     }
 
 
-
-
-
+    /* ++ icon hover */
     .navbar>.icon-btn:hover {
         background-color: #f4f4f9;
-        /* Light background on hover */
         border-color: #000;
         /* Darker border on hover */
     }
 
-
-
     .navbar>.icon-btn:hover .user-icon {
         color: #000;
-        /* Darker icon color on hover */
     }
 
     .user-icon {
         font-size: 24px;
         /* Icon size */
-        color: #545454;
+        color: #FF7701;
         transition: color 0.3s ease;
         /* Smooth color change on hover */
     }
 
     .user-icon:hover {
-        color: #fff;
+        color: #FF7701;
         /* Darken color on hover */
     }
 
+    /* -- icon hover */
 
- /* -----------dropdown 2 -------------*/
- .dropdown {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 10px;
-        z-index: 1;
-    }
-
-    .dropdown-btn {
-        padding: 5px 20px;
-        background-color: #e5e5e5;
-        color: #545454;
-        border: 3px solid #545454;
-        border-radius: 22px;
-        cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.3s ease;
-    }
-
-    .dropdown-btn::after {
-        content: '';
-        width: 0;
-        height: 0;
-        border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
-        border-left: 5px solid #545454;
-        margin-left: 10px;
-        transition: background-color 0.3s ease;
-        transform: rotate(270deg);
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: white;
-        min-width: 180px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        margin-top: 0px;
-        border-radius: 4px;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .dropdown-content a {
-        padding: 0;
-        text-decoration: none;
-        display: block;
-        color: #545454;
-    }
-
-    .dropdown-content a:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Rotate the arrow when hovering over the dropdown button */
-    .dropdown:hover .dropdown-btn::after {
-        transform: rotate(90deg);
-        /* Rotates the arrow */
-    }
-
-    /* Hover effect on the button (optional, for visual feedback) */
-    .dropdown-btn:hover {
-        background-color: #ccc
-    }
 
     .modal-overlay {
         display: none;
@@ -1105,57 +952,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         /* Optional: Add hover effect */
     }
 
-    /* Table container styles */
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 0;
-    }
-
-    th,
-    td {
-        padding: 10px;
-        text-align: center;
-        border: 2px solid #545454;
-    }
-
-    th {
-
-        color: #fff;
-        padding-bottom: 15px !important;
-        margin: 0;
-        background-color: #584636;
-    }
-
-    tr:nth-child(even) {
-        background-color: #fff;
-    }
-
-    /* Container styles */
-    .container {
-        max-width: 1240px;
-        width: 100%;
-        margin: 0px auto;
-        background-color: #fff;
-        padding: 0;
-        border-radius: 0px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .button-container button {
-        margin: 5px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    /* END table container styles */
-
     .alert {
         padding: 10px;
         color: #4CAF50;
@@ -1165,104 +961,9 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         text-align: center;
     }
 
-     /* start of search btn style */
-     .hr-center {
-                border: none;
-                /* Removes the default border */
-                border-top: 1px solid #fff;
-                width: 20%;
-                margin: 0 auto;
-                padding-bottom: 20px;
-
-            }
-
-            .search-container {
-                text-align: center;
-                margin: 20px 0;
-            }
-
-            .search-container h2 {
-                color: #fff;
-                padding-top: 15px;
-                margin-bottom: 9px;
-                margin-top: 10px !important;
-                font-style: bold;
-                font-size: 65px;
-                font-family: 'Work Sans', sans-serif;
-            }
-
-            .search-form {
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .search-input {
-                padding: 10px;
-                width: 500px;
-                border: 2px solid #fff;
-                border-radius: 0px;
-                font-size: 14px;
-                margin-right: 0px;
-                
-            }
-
-            .search-input:focus {
-                border-radius: 0px;
-                outline: none;
-            }
-
-            .search-btn {
-                padding: 10px 20px;
-                background-color: #fff;
-                color: white;
-                border: 2px solid #fff;
-                border-radius: 0px;
-                cursor: pointer;
-                font-size: 14px;
-            }
-
-            .search-btn:hover {
-                background-color: #d2d2d4;
-
-            }
-
-            .search-btn ion-icon {
-                font-size: 14px;
-                color: #FF7701;
-
-            }
-
-        /* end of search btn style */
-
     .text-center {
         text-align: center;
     }
-
-    /* limit start*/
-.transparent-form {
-        background: transparent;
-        border: none;
-        padding: 0;
-        margin-left: 140px;
-        margin-bottom: 10px;
-
-    }
-
-    .transparent-select {
-        background: #fff;
-        border: 1px solid #545454;
-        color: #333;
-        padding: 5px 10px;
-        font-size: 14px;
-    }
-
-    .transparent-form label {
-        color: #fff;
-        font-size: 14px;
-    }
-     /* limit end*/
-
 
     /* Button styles */
     .btn .view-button {
@@ -1321,6 +1022,8 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         border: 1px solid #545454;
     }
 
+
+
     .btn:hover {
         opacity: 0.9;
     }
@@ -1330,6 +1033,8 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     .view-button:hover {
         opacity: 0.9;
     }
+
+
 
     table tr:nth-child(even) .view-button {
 
@@ -1354,52 +1059,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         margin-bottom: 20px;
     }
 
-    /* Style for the pagination */
-    .pagination-info {
-        font-size: 14px;
-        color: #fff;
-        margin: 10px 0;
-        font-family: 'Arial', sans-serif;
-        display: inline-block;
-        margin-left: 140px;
-        margin-bottom: 60px;
-        margin-right: 0px;
-    }
-    .pagination {
-        display: inline-flex;
-        list-style-type: none;
-        padding: 0;
-        margin: 10px 0;
-        justify-content: flex-start;
-    }
-
-    .pagination a {
-        display: inline-block;
-        padding: 8px 12px;
-        margin: 0;
-        color: #545454;
-        text-decoration: none;
-        background-color: transparent;
-        border: 1px solid #545454;
-        border-radius: 0px;
-        font-size: 14px;
-
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* Active page number styling */
-    .pagination a.active {
-        background-color: #fff;
-        color: #545454;
-        border-color: #545454;
-    }
-
-    .pagination a:hover {
-        background-color: #ddd;
-        color: #28a745;
-    }
-    /* end pagination links */
-
     .approve-delete-form {
         display: flex;
         align-items: center;
@@ -1410,117 +1069,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     .approve-delete-form button {
         margin-right: 5px;
     }
-
-    /* Footer */
-    .footer {
-        background-color: #fff;
-        padding: 20px 0;
-        color: #000;
-        font-family: 'Hanken Grotesk', sans-serif;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        position: relative;
-        text-align: center;
-        margin-top: 100px;
-    }
-
-    .footer-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        /* Space out logo and contact text */
-        width: 90%;
-        margin: 0 auto;
-        padding-bottom: 20px;
-    }
-
-    .footer-logo {
-        align-self: flex-start;
-        margin-top: 25px;
-    }
-
-    .footer-logo img {
-        max-width: 70px;
-    }
-
-    .footer-contact {
-        text-align: right;
-        font-size: 14px;
-        margin-left: auto;
-        width: 20%;
-        margin-bottom: 25px;
-    }
-
-    .footer-contact h4 {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-
-    .footer-contact p {
-        font-size: 14px;
-        margin-top: 0;
-
-    }
-
-    .all-links {
-        display: flex;
-
-        width: 100%;
-        margin-top: 20px;
-        position: absolute;
-
-        justify-content: center;
-    }
-
-    .footer-others {
-        display: flex;
-        justify-content: center;
-        /* Align links in the center */
-        gap: 30px;
-        top: 190px;
-        left: 30%;
-        margin-left: 140px;
-        margin-top: 20px;
-        transform: translateX(-50%);
-    }
-
-
-    .footer-others a {
-        color: #000;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    .footer-separator {
-        width: 90%;
-        height: 1px;
-        background-color: #000;
-        margin: 10px auto;
-        border: none;
-        position: absolute;
-        bottom: 40px;
-        left: 50%;
-        margin-top: 20px;
-        transform: translateX(-50%);
-    }
-
-    .footer-text {
-        font-size: 14px;
-        margin-top: 20px;
-        color: #000;
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-
-    }
-
-
-
-
-
 
 
     @media (max-width: 768px) {
@@ -1581,17 +1129,347 @@ $total_notifications = $claim_count + $found_count + $lost_count;
             margin-right: 3px;
         }
     }
+
+    .message {
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 5px;
+        font-size: 16px;
+        text-align: center;
+        width: 80%;
+        /* Adjust width as necessary */
+        max-width: 600px;
+        /* Max width for larger screens */
+    }
+
+    .success {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .error {
+        background-color: #f44336;
+        color: white;
+    }
+
+
+
+
+
+
+
+
+    /* -----------CONTENT OF THEW WEBSITE ----------------- */
+
+    /* start of search btn style */
+    .hr-center {
+        border: none;
+        /* Removes the default border */
+        border-top: 1px solid #fff;
+        width: 20%;
+        margin: 0 auto;
+        padding-bottom: 20px;
+
+    }
+
+    .search-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .search-container h2 {
+        color: #fff;
+        padding-top: 15px;
+        margin-bottom: 9px;
+        margin-top: 10px !important;
+        font-style: bold;
+        font-size: 65px;
+        font-family: 'Work Sans', sans-serif;
+    }
+
+    .search-form {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .search-input {
+        padding: 10px;
+        width: 500px;
+        border: 2px solid #fff;
+        border-radius: 0px;
+        font-size: 14px;
+        margin-right: 0px;
+
+    }
+
+    .search-input:focus {
+        border-radius: 0px;
+        outline: none;
+    }
+
+    .search-btn {
+        padding: 10px 20px;
+        background-color: #fff;
+        color: white;
+        border: 2px solid #fff;
+        border-radius: 0px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .search-btn:hover {
+        background-color: #d2d2d4;
+
+    }
+
+    .search-btn ion-icon {
+        font-size: 14px;
+        color: #FF7701;
+
+    }
+
+    /* end of search btn style */
+
+    /* limit start*/
+    .transparent-form {
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin-left: 140px;
+        margin-bottom: 10px;
+
+    }
+
+    .transparent-select {
+        background: #fff;
+        border: 1px solid #545454;
+        color: #333;
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+
+    .transparent-form label {
+        color: #fff;
+        font-size: 14px;
+    }
+
+    /* limit end*/
+
+    /* Table container styles */
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        text-align: center;
+        border: 2px solid #545454;
+    }
+
+    th {
+
+        color: #fff;
+        padding-bottom: 15px !important;
+        margin: 0;
+        background-color: #584636;
+    }
+
+    tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    .container {
+        max-width: 1240px;
+        width: 100%;
+        margin: 0px auto;
+        background-color: #fff;
+        padding: 0;
+        border-radius: 0px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .button-container button {
+        margin: 5px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* END table container styles */
+
+    /* Pagination: start */
+    .pagination-info {
+        font-size: 14px;
+        color: #fff;
+        margin: 10px 0;
+        font-family: 'Arial', sans-serif;
+        display: inline-block;
+        margin-left: 140px;
+        margin-bottom: 60px;
+        margin-right: 0px;
+    }
+
+    .pagination {
+        display: inline-flex;
+        list-style-type: none;
+        padding: 0;
+        margin: 10px 0;
+        justify-content: flex-start;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px 12px;
+        margin: 0;
+        color: #545454;
+        text-decoration: none;
+        background-color: transparent;
+        border: 1px solid #545454;
+        border-radius: 0px;
+        font-size: 14px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a.active {
+        background-color: #fff;
+        color: #545454;
+        border-color: #545454;
+    }
+
+    .pagination a:hover {
+        background-color: #ddd;
+        color: #545454;
+    }
+
+    /* Pagination: end */
+
+    /* Footer */
+    .footer {
+        background-color: #fff;
+        padding: 20px 0;
+        color: #545454;
+        font-family: 'Hanken Grotesk', sans-serif;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        position: relative;
+        text-align: center;
+        margin-top: 100px;
+    }
+
+    .footer-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /* Space out logo and contact text */
+        width: 90%;
+        margin: 0 auto;
+        padding-bottom: 20px;
+    }
+
+    .footer-logo {
+        align-self: flex-start;
+        margin-top: 10px;
+    }
+
+    .footer-logo img {
+        max-width: 70px;
+    }
+
+    .footer-contact {
+        text-align: right;
+        /* Align text to the right */
+        font-size: 14px;
+        margin-left: auto;
+        width: 20%;
+        margin-bottom: 25px;
+    }
+
+    .footer-contact h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .footer-contact p {
+        font-size: 14px;
+        margin-top: 0;
+
+    }
+
+    .all-links {
+        display: flex;
+
+        width: 100%;
+        margin-top: 20px;
+        position: absolute;
+
+        justify-content: center;
+    }
+
+    .footer-others {
+        display: flex;
+        justify-content: center;
+        /* Align links in the center */
+        gap: 30px;
+        top: 190px;
+        left: 30%;
+        margin-left: 140px;
+        margin-top: 20px;
+        transform: translateX(-50%);
+    }
+
+
+    .footer-others a {
+        color: #545454;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .footer-separator {
+        width: 90%;
+        height: 1px;
+        background-color: #545454;
+        margin: 10px auto;
+        border: none;
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        margin-top: 20px;
+        transform: translateX(-50%);
+    }
+
+    .footer-text {
+        font-size: 14px;
+        margin-top: 20px;
+        color: #545454;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+
+    }
     </style>
 </head>
 
 <body>
     <main>
-        <div class="navbar">
 
+        <div class="navbar">
             <img src="images/logo.png" alt="Logo" class="navbar-logo">
             <h1 class="main-title">
                 UNIVERSITY OF CALOOCAN CITY
-                <span class="subtitle">  LOST AND FOUND ADMIN</span>
+                <span class="subtitle"> LOST AND FOUND ADMIN</span>
             </h1>
 
             <!-- Claim Reports Dropdown -->
@@ -1605,11 +1483,10 @@ $total_notifications = $claim_count + $found_count + $lost_count;
 
             <!-- Lost Reports Dropdown -->
             <div class="dropdown">
-                <button class="dropbtn">Lost Reports</button>
-                <div class="dropdown-content">
-                    <a href="pending_lost_report.php">Pending Lost</a>
-                    <a href="approved_lost_report.php">Approved Lost</a>
-                </div>
+
+                <a href="pending_lost_report.php" class="dropbtn">Pending Lost</a>
+
+
             </div>
 
             <!-- Found Reports Dropdown -->
@@ -1622,7 +1499,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
             </div>
 
             <!-- Guidelines Link -->
-            <a href="Guidelines.php">Guidelines</a>
+            <a href="Guidelines.php" class="guidelinesLink">Guidelines</a>
 
             <!-- Notification Icon Button -->
             <button class="notif-btn" onclick="showModal('notif')">
@@ -1631,8 +1508,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
                     <?= htmlspecialchars($total_notifications) ?>
                 </span>
             </button>
-
-
 
             <!-- Side Navigation Toggle -->
             <button class="hamburger-icon" onclick="toggleSideNav()">
@@ -1650,11 +1525,6 @@ $total_notifications = $claim_count + $found_count + $lost_count;
         </div>
 
 
-
-
-
-
-        </div>
         <div id="loginclickmodal" class="modal-overlay" style="display: none;">
             <div class="modal-content2">
                 <!-- Close Button -->
@@ -1672,8 +1542,14 @@ $total_notifications = $claim_count + $found_count + $lost_count;
                 </div>
             </div>
         </div>
+
+
+        </div>
         <div class="search-container">
-            <h2>Pending Lost Reports</h2>
+            <h2>
+                Lost Reports History
+            </h2>
+
             <hr class="hr-center">
 
             <form class="search-form">
@@ -1685,7 +1561,7 @@ $total_notifications = $claim_count + $found_count + $lost_count;
 
             </form>
         </div>
-        <form method="POST" action="pending_lost_report.php" class="transparent-form">
+        <form method="POST" action="pending_found_report.php" class="transparent-form">
             <select name="entry_limit" id="entry_limit" onchange="this.form.submit()" class="transparent-select">
                 <option value="5" <?= $limit == 5 ? 'selected' : ''; ?>>5</option>
                 <option value="10" <?= $limit == 10 ? 'selected' : ''; ?>>10</option>
@@ -1709,10 +1585,10 @@ $total_notifications = $claim_count + $found_count + $lost_count;
                             <th scope="col">Report ID</th>
                             <th scope="col">Item Name</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Last known location</th>
-                            <th scope="col">Date Loss</th>
+                            <th scope="col">Location found</th>
+                            <th scope="col">Date Found</th>
                             <th scope="col">Details</th>
-                            <th scope="col">Action</th>
+
 
                         </tr>
                     </thead>
@@ -1726,116 +1602,111 @@ $total_notifications = $claim_count + $found_count + $lost_count;
                             <td><?= htmlspecialchars($row["location_found"]) ?></td>
                             <td><?= htmlspecialchars($row["date_found"]) ?></td>
                             <td>
-                                <a href="adminview_pending.php?_id=<?= htmlspecialchars($row["id"]) ?>"
+                                <a href="adminview_pending_lost.php?_id=<?= htmlspecialchars($row["id"]) ?>"
                                     class="view-button">View</a>
                             </td>
-                            <td>
-                                <form action="" method="POST" style="display:inline;">
-                                    <input type="hidden" name="approve_id" value="<?= htmlspecialchars($row["id"]) ?>">
-                                    <button type="submit" class="btn btn-success">Approve</button>
-                                </form>
-                                <form action="" method="POST" style="display:inline;">
-                                    <input type="hidden" name="delete_id" value="<?= htmlspecialchars($row["id"]) ?>">
-                                    <button type="submit" class="btn btn-danger">Reject</button>
-                                </form>
-                            </td>
+
                         </tr>
                         <?php endforeach; ?>
                         <?php else: ?>
                         <tr>
-                            <td colspan="7">No pending reports found</td>
+                            <td colspan="7">No Lost reports found</td>
                         </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
-            <div id="notif" class="modal-overlay" style="display: none;">
-                <div class="modal-content3">
-                    <!-- Close Button -->
-                    <button class="close-btn" onclick="closeModal('notif')">&times;</button>
 
-                    <div class="modal-title3">
-                        <h2>Notification</h2>
-                        <hr>
-                    </div>
-
-                    <div class="reports-container">
-                        <!-- Pending Claim Reports -->
-                        <div class="reports-btn">
-                            <a href="pending_claim.php" class="">
-                                <button class="transparent-btn">
-                                    <div class="claim-reports-container">
-                                        <?php if (!empty($pendingClaimReports)): ?>
-                                        <?php foreach ($pendingClaimReports as $row): ?>
-                                        <div class="claim-card">
-                                            <div class="claim-card-header"></div>
-                                            <div class="claim-card-body">
-                                                <p><span
-                                                        style="font-weight: bold !important;"><?= htmlspecialchars($row['reporter_name']) ?></span>
-                                                    submitted a request claim.</p>
-                                            </div>
-                                        </div>
-                                        <?php endforeach; ?>
-                                        <?php else: ?>
-                                        <p>No pending claim reports.</p>
-                                        <?php endif; ?>
-                                    </div>
-                                </button>
-                            </a>
-                        </div>
-
-                        <!-- Pending Found Reports -->
-                        <div class="reports-btn">
-                            <a href="pending_found_report.php" class="">
-                                <button class="transparent-btn">
-                                    <div class="found-reports-container">
-                                        <?php if (!empty($pendingFoundReports)): ?>
-                                        <?php foreach ($pendingFoundReports as $row): ?>
-                                        <div class="found-card">
-                                            <div class="found-card-header"></div>
-                                            <div class="found-card-body">
-                                                <p><span
-                                                        style="font-weight: bold !important;"><?= htmlspecialchars($row['reporter_name']) ?></span>
-                                                    submitted a found report.</p>
-                                            </div>
-                                        </div>
-                                        <?php endforeach; ?>
-                                        <?php else: ?>
-                                        <p>No pending found reports.</p>
-                                        <?php endif; ?>
-                                    </div>
-                                </button>
-                            </a>
-                        </div>
-
-                        <!-- Pending Lost Reports -->
-                        <div class="reports-btn">
-                            <a href="pending_lost_report.php?_id=<?= htmlspecialchars($row["id"]) ?>" class="">
-                                <button class="transparent-btn">
-                                    <div class="lost-reports-container">
-                                        <?php if (!empty($pendingLostReports)): ?>
-                                        <?php foreach ($pendingLostReports as $row): ?>
-                                        <div class="lost-card">
-                                            <div class="lost-card-header"></div>
-                                            <div class="lost-card-body">
-                                                <p><strong><?= htmlspecialchars($row['reporter_name']) ?></strong>
-                                                    submitted a lost report.</p>
-
-                                            </div>
-                                        </div>
-                                        <?php endforeach; ?>
-                                        <?php else: ?>
-                                        <p>No pending lost reports.</p>
-                                        <?php endif; ?>
-                                    </div>
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
+        <div id="notif" class="modal-overlay" style="display: none;">
+            <div class="modal-content3">
+                <!-- Close Button -->
+                <button class="close-btn" onclick="closeModal('notif')">&times;</button>
+
+                <div class="modal-title3">
+                    <h2>Notification</h2>
+                    <hr>
+                </div>
+
+                <div class="reports-container">
+                    <!-- Pending Claim Reports -->
+                    <div class="reports-btn">
+                        <a href="pending_claim.php" class="">
+                            <button class="transparent-btn">
+                                <div class="claim-reports-container">
+                                    <?php if (!empty($pendingClaimReports)): ?>
+                                    <?php foreach ($pendingClaimReports as $row): ?>
+                                    <div class="claim-card">
+                                        <div class="claim-card-header"></div>
+                                        <div class="claim-card-body">
+                                            <p><span
+                                                    style="font-weight: bold !important;"><?= htmlspecialchars($row['reporter_name']) ?></span>
+                                                submitted a request claim.</p>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <p>No pending claim reports.</p>
+                                    <?php endif; ?>
+                                </div>
+                            </button>
+                        </a>
+                    </div>
+
+                    <!-- Pending Found Reports -->
+                    <div class="reports-btn">
+                        <a href="pending_found_report.php" class="">
+                            <button class="transparent-btn">
+                                <div class="found-reports-container">
+                                    <?php if (!empty($pendingFoundReports)): ?>
+                                    <?php foreach ($pendingFoundReports as $row): ?>
+                                    <div class="found-card">
+                                        <div class="found-card-header"></div>
+                                        <div class="found-card-body">
+                                            <p><span
+                                                    style="font-weight: bold !important;"><?= htmlspecialchars($row['reporter_name']) ?></span>
+                                                submitted a found report.</p>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <p>No pending found reports.</p>
+                                    <?php endif; ?>
+                                </div>
+                            </button>
+                        </a>
+                    </div>
+
+                    <!-- Pending Lost Reports -->
+                    <?php if (!empty($pendingLostReports)): ?>
+                    <?php foreach ($pendingLostReports as $row): ?>
+                    <div class="reports-btn">
+                        <a href="pending_lost_report.php?_id=<?= htmlspecialchars($row["id"]) ?>" class="">
+                            <button class="transparent-btn">
+                                <div class="lost-reports-container">
+                                    <div class="lost-card">
+                                        <div class="lost-card-header"></div>
+                                        <div class="lost-card-body">
+                                            <p><span
+                                                    style="font-weight: bold !important;"><?= htmlspecialchars($row['reporter_name']) ?></span>
+                                                submitted a lost report.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <p>No pending lost reports.</p>
+                    <?php endif; ?>
+
+                </div>
+            </div>
+        </div>
+
+
 
         <p class="pagination-info">Showing <?php echo $currentEntriesStart; ?> to <?php echo $currentEntriesEnd; ?> of
             <?php echo $totalRecords; ?> entries</p>
@@ -1854,8 +1725,11 @@ $total_notifications = $claim_count + $found_count + $lost_count;
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
+
                 <img src="images/logo.png" alt="Logo" />
                 <img src="images/caloocan.png" alt="Logo" />
+
+
             </div>
             <div class="all-links">
                 <nav class="footer-others">

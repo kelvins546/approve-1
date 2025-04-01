@@ -296,7 +296,7 @@ $conn->close();
     }
 
     .navbar a {
-        
+
         color: #545454;
         padding: 3px;
         text-decoration: none;
@@ -308,7 +308,7 @@ $conn->close();
         text-decoration: underline;
     }
 
-    
+
 
     .nav-login {
         width: 110px;
@@ -611,7 +611,7 @@ $conn->close();
         background-color: #28a745;
         color: #fff;
         font-weight: bold;
-        margin-left: 110px;
+
 
 
 
@@ -807,6 +807,10 @@ $conn->close();
                         value="<?= htmlspecialchars($item['primary_color']) ?>" class="form-control" readonly>
                 </div>
                 <div class="form-group">
+                    <label for="primary_color">Status</label>
+                    <input type="text" name="primary_color" id="primary_color"
+                        value="<?= htmlspecialchars($item['position']) ?>" class="form-control" readonly>
+
                 </div>
             </div>
             <div class="form-row-submit">

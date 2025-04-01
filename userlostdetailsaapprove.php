@@ -350,40 +350,31 @@ $conn->close();
         transition: color 0.3s ease, text-decoration 0.3s ease;
     }
 
-    /* Hover effect on button */
-    .nav-btn:hover {
-
-        text-decoration: underline;
-    }
-
-    .nav-main>.icon-btn {
+    .icon-btn {
         background-color: #f4f5f6;
-        /* Transparent background for the button */
-        border: 2px solid #000;
-        /* Consistent border color */
-        /* Border for circular shape */
+        border: 2px solid #ff7701;
         border-radius: 50%;
-        /* Makes the border circular */
         cursor: pointer;
-        /* Pointer cursor */
         padding: 3px;
-        /* Space around the icon */
         display: flex;
-        /* Center the icon inside the button */
         align-items: center;
-        /* Vertical centering */
         justify-content: center;
-        /* Horizontal centering */
-        margin-left: 830px;
-        /* Push the button to the far right */
+        margin-left: 20px;
+        /* Adjust this value as needed */
         transition: background-color 0.3s ease, border-color 0.3s ease;
-        /* Smooth hover effect */
         z-index: 99999;
-
+        position: relative;
+        /* Enable relative positioning */
+        right: -100px;
     }
+
 
     .icon-btn {
         z-index: 99999;
+        margin-left: auto;
+        width: 40px;
+        /* Set to desired size */
+        height: 40px;
     }
 
 
@@ -392,29 +383,30 @@ $conn->close();
     .nav-main>.icon-btn:hover {
         background-color: #f4f4f9;
         /* Light background on hover */
-        border-color: #000;
+        border-color: #e66a00;
         /* Darker border on hover */
     }
 
 
 
     .nav-main>.icon-btn:hover .user-icon {
-        color: #000;
+        color: #e66a00;
         /* Darker icon color on hover */
     }
 
     .user-icon {
         font-size: 24px;
         /* Icon size */
-        color: #545454;
+        color: #ff7701 !important;
         transition: color 0.3s ease;
         /* Smooth color change on hover */
     }
 
     .user-icon:hover {
-        color: #fff;
+        color: #e66a00;
         /* Darken color on hover */
     }
+
 
     .navbar a {
         color: #545454;
@@ -1426,10 +1418,9 @@ $conn->close();
             <a href="guidelines.php">Guidelines</a>
 
             <div class="dropdown">
-                <button class="nav-btn">Browse Reports</button>
-                <div class="dropdown-content">
-                    <a href="userview.php">Found Reports</a>
-                    <a href="lost_reports.php">Lost Reports</a>
+                <a href="userview.php">Browse Reports</a>
+                <div class="dropdown-content1">
+
                 </div>
             </div>
 

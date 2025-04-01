@@ -171,7 +171,7 @@ $conn->close();
         color: #545454;
         flex-direction: column;
         min-height: 100vh;
-        background-image: url('images/bg1.png');
+        background-image: url('images/blur\ brown.png');
         background-size: cover;
         background-position: center center;
         background-attachment: fixed;
@@ -631,12 +631,7 @@ $conn->close();
 </head>
 
 <body>
-    <div class="navbar">
 
-        <a href="found_report.php">Home</a>
-        <a href="submit_report.php">Guidelines</a>
-        <a href="userview.php">Browse Reports</a>
-    </div>
     <div class="container-wrapper">
         <div class="container">
             <div class="container-title">
@@ -732,30 +727,7 @@ $conn->close();
     </div>
 
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">
 
-            </div>
-            <div class="all-links">
-                <nav class="footer-others">
-                    <a href="">ABOUT US</a>
-                    <a href="">TERMS</a>
-                    <a href="">FAQ</a>
-                    <a href="">PRIVACY</a>
-                </nav>
-            </div>
-
-
-            <div class="footer-contact">
-                <h4>Contact us</h4>
-                <p>This website is currently under construction. For futher inquires, please contact us at
-                    starcity@gmailcom</p>
-            </div>
-            <hr class="footer-separator">
-            <p class="footer-text">&copy; Star City, All rights reserved.</p>
-        </div>
-    </footer>
 </body>
 
 </html>

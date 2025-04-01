@@ -8,20 +8,20 @@
     <title>Guidlines</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap');
-        @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-        @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
+    @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap');
+    @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap"
     );
 
-        /* Reset some default styles */
-        *{
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Hanken Grotesk', Arial, sans-serif;
-        }
+    /* Reset some default styles */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Hanken Grotesk', Arial, sans-serif;
+    }
 
-        body {
+    body {
         background-color: #fff;
         margin: 0;
         padding: 0;
@@ -33,7 +33,7 @@
         background-color: #FAF9F6;
     }
 
-        .navbar {
+    .navbar {
         background-color: #fff;
         padding: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -76,7 +76,7 @@
 
     }
 
-    
+
 
     .nav-main {
         display: flex;
@@ -284,155 +284,161 @@
 
 
 
-        .boxFP {
-            height: 240px;
-            width: 1278px;
-            border: 1px solid #fff;
-            background-image: url(Copy\ of\ Lost\ and\ Found.png);
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            font-family: 'Canva Sans', sans-serif;
-            font-weight: bold;
-            font-size: 50px;
-            color: #fff;
-            text-align: center;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    .boxFP {
+        height: 240px;
+        width: 1278px;
+        border: 1px solid #fff;
+        background-image: url(Copy\ of\ Lost\ and\ Found.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-family: 'Canva Sans', sans-serif;
+        font-weight: bold;
+        font-size: 50px;
+        color: #fff;
+        text-align: center;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
 
-        .orangeBox {
-            margin-top: 30px;
-            margin-bottom: 30px;
-            height: 110px;
-            width: 1580px;
-            background-color: #f8d0b4;
-        }
+    .orangeBox {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        height: 110px;
+        width: 1580px;
+        background-color: #f8d0b4;
+    }
 
-        .orangeBtxt {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 18px;
-            text-align: justify;
-            font-weight: normal;
-            color: #726e6e;
-            padding-top: 35px;
-            margin-left: 60px;
-            margin-right: 60px;
-        }
+    .orangeBtxt {
+        font-family: 'Work Sans', sans-serif;
+        font-size: 18px;
+        text-align: justify;
+        font-weight: normal;
+        color: #726e6e;
+        padding-top: 35px;
+        margin-left: 60px;
+        margin-right: 60px;
+    }
 
-        /*PARENT1*/
-        .container2 {
-            display: flex;
-            align-items: center; /* Align text and link vertically */
-            gap: 10px; /* Space between heading and link */
-            margin-top: 30px;
-            margin-left: 80px;
-            height: 60px;
-            width: 1000px;
-            background-color: #fff;
-            box-shadow: 5px 5px 15px rgba(0.1, 0.1, 0.1, 0.1);
-        }   
+    /*PARENT1*/
+    .container2 {
+        display: flex;
+        align-items: center;
+        /* Align text and link vertically */
+        gap: 10px;
+        /* Space between heading and link */
+        margin-top: 30px;
+        margin-left: 80px;
+        height: 60px;
+        width: 1000px;
+        background-color: #fff;
+        box-shadow: 5px 5px 15px rgba(0.1, 0.1, 0.1, 0.1);
+    }
 
-        .claimh3 {
-            padding-top: 5px;
-            font-family: 'Canva Sans', sans-serif;
-            font-weight: normal;
-            font-size: 25px;
-            color: #726e6e;
-            padding-left: 20px;
-        }
+    .claimh3 {
+        padding-top: 5px;
+        font-family: 'Canva Sans', sans-serif;
+        font-weight: normal;
+        font-size: 25px;
+        color: #726e6e;
+        padding-left: 20px;
+    }
 
-        .claimDownloadLink {
-            font-family: 'Canva Sans', sans-serif;
-            font-style: italic;
-            font-size: 16px;
-            color: #007bff;
-            text-decoration: none;
-            padding-top: 7px;
-            transition: background 0.3s ease;
-        }
+    .claimDownloadLink {
+        font-family: 'Canva Sans', sans-serif;
+        font-style: italic;
+        font-size: 16px;
+        color: #007bff;
+        text-decoration: none;
+        padding-top: 7px;
+        transition: background 0.3s ease;
+    }
 
-        .claimDownloadLink:hover {
-            color: orange;
-        }
+    .claimDownloadLink:hover {
+        color: orange;
+    }
 
 
-        .container3 {
-            display: flex;
-            align-items: center; /* Align text and link vertically */
-            gap: 10px; /* Space between heading and link */
-            margin-top: 30px;
-            margin-left: 80px;
-            height: 60px;
-            width: 1000px;
-            background-color: #fff;
-            box-shadow: 5px 5px 15px rgba(0.1, 0.1, 0.1, 0.1);
-        }   
+    .container3 {
+        display: flex;
+        align-items: center;
+        /* Align text and link vertically */
+        gap: 10px;
+        /* Space between heading and link */
+        margin-top: 30px;
+        margin-left: 80px;
+        height: 60px;
+        width: 1000px;
+        background-color: #fff;
+        box-shadow: 5px 5px 15px rgba(0.1, 0.1, 0.1, 0.1);
+    }
 
-        .losth3 {
-            padding-top: 5px;
-            font-family: 'Canva Sans', sans-serif;
-            font-weight: normal;
-            font-size: 25px;
-            color: #726e6e;
-            padding-left: 20px;
-        }
+    .losth3 {
+        padding-top: 5px;
+        font-family: 'Canva Sans', sans-serif;
+        font-weight: normal;
+        font-size: 25px;
+        color: #726e6e;
+        padding-left: 20px;
+    }
 
-        .reportedLostItemDownloadLink {
-            font-family: 'Canva Sans', sans-serif;
-            font-style: italic;
-            font-size: 16px;
-            color: #007bff;
-            text-decoration: none;
-            padding-top: 7px;
-            transition: background 0.3s ease;
-        }
+    .reportedLostItemDownloadLink {
+        font-family: 'Canva Sans', sans-serif;
+        font-style: italic;
+        font-size: 16px;
+        color: #007bff;
+        text-decoration: none;
+        padding-top: 7px;
+        transition: background 0.3s ease;
+    }
 
-        .reportedLostItemDownloadLink:hover {
-            color: orange;
-        }
+    .reportedLostItemDownloadLink:hover {
+        color: orange;
+    }
 
-        .container4{
-            display: flex;
-            align-items: center; /* Align text and link vertically */
-            gap: 10px; /* Space between heading and link */
-            margin-top: 30px;
-            margin-left: 80px;
-            height: 60px;
-            width: 1000px;
-            background-color: #fff;
-            box-shadow: 5px 5px 15px rgba(0.1, 0.1, 0.1, 0.1);
-        }   
+    .container4 {
+        display: flex;
+        align-items: center;
+        /* Align text and link vertically */
+        gap: 10px;
+        /* Space between heading and link */
+        margin-top: 30px;
+        margin-left: 80px;
+        height: 60px;
+        width: 1000px;
+        background-color: #fff;
+        box-shadow: 5px 5px 15px rgba(0.1, 0.1, 0.1, 0.1);
+    }
 
-        .foundh3 {
-            padding-top: 5px;
-            font-family: 'Canva Sans', sans-serif;
-            font-weight: normal;
-            font-size: 25px;
-            color: #726e6e;
-            padding-left: 20px;
-        }
+    .foundh3 {
+        padding-top: 5px;
+        font-family: 'Canva Sans', sans-serif;
+        font-weight: normal;
+        font-size: 25px;
+        color: #726e6e;
+        padding-left: 20px;
+    }
 
-        .reportedFoundItemDownloadLink {
-            font-family: 'Canva Sans', sans-serif;
-            font-style: italic;
-            font-size: 16px;
-            color: #007bff;
-            text-decoration: none;
-            padding-top: 7px;
-            transition: background 0.3s ease;
-        }
+    .reportedFoundItemDownloadLink {
+        font-family: 'Canva Sans', sans-serif;
+        font-style: italic;
+        font-size: 16px;
+        color: #007bff;
+        text-decoration: none;
+        padding-top: 7px;
+        transition: background 0.3s ease;
+    }
 
-        .reportedFoundItemDownloadLink:hover {
-            color: orange;
-        }
+    .reportedFoundItemDownloadLink:hover {
+        color: orange;
+    }
 
-        
-        /* Footer */
+
+    /* Footer */
     .footer {
         background-color: #fff;
         padding: 20px 0;
@@ -538,18 +544,17 @@
         left: 50%;
         transform: translateX(-50%);
 
-    }   
+    }
 
     .LAFh1 {
         font-family: "League Spartan", sans-serif;
         font-optical-sizing: auto;
         font-weight: bold;
     }
-        
     </style>
 
 <body>
-<div class="navbar">
+    <div class="navbar">
         <div class="nav-main">
             <img src="images/logo.png" alt="Logo" class="navbar-logo">
             <span class="navbar-text">UNIVERSITY OF CALOOCAN CITY</span>
@@ -576,14 +581,15 @@
                 <h1 class="LAFh1">GUIDELINES AND PROCEDURES</h1>
             </div>
         </div>
-    </div>    
+    </div>
 
     <div class="orangeBox">
-    <p class="orangeBtxt">
-        <b>IMPORTANT NOTE:</b> The school provides a Lost and Found service to assist in the recovery of lost items. 
-        However, the school does not assume any responsibility for lost, stolen, or unclaimed items. 
-        The use of this service is voluntary, and all individuals acknowledge the following terms upon reporting or claiming an item.
-    </p>
+        <p class="orangeBtxt">
+            <b>IMPORTANT NOTE:</b> The school provides a Lost and Found service to assist in the recovery of lost items.
+            However, the school does not assume any responsibility for lost, stolen, or unclaimed items.
+            The use of this service is voluntary, and all individuals acknowledge the following terms upon reporting or
+            claiming an item.
+        </p>
     </div>
 
     <div class="container2">
